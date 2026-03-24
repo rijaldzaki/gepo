@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Mail, User, MapPin, MessageCircle } from "lucide-react";
+import { Phone, Mail, User, MapPin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 
 // ── TYPES ─────────────────────────────────────────────────────────────────────
@@ -111,17 +111,17 @@ export default function Contact() {
             <section className="bg-white py-16 sm:py-20">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
-                    <div className="text-center mb-10">
-                        <h2 className="text-center text-2xl sm:text-3xl font-bold text-black mb-16 tracking-tight">
+                    <div className="flex flex-col items-center gap-3 mb-10">
+                        <h2 className="text-center text-2xl sm:text-3xl font-bold text-black tracking-tight">
                             Connect with us for the best offer
                         </h2>
-                        <p className="mt-2 text-gray-500 text-sm sm:text-base">
+                        <p className="text-center text-gray-500 text-sm sm:text-base">
                             Kami siap membantu memenuhi kebutuhan listrik Anda dengan solusi energi surya yang terjangkau.
                         </p>
                     </div>
 
                     {/* Card */}
-                    <div className="bg-gray-50/50 rounded-3xl p-10 md:p-16 shadow-lg border border-gray-100">
+                    <div className="bg-gray-50/50 rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100">
                         {submitted ? (
                             /* ── SUCCESS STATE ── */
                             <div className="text-center py-12">
@@ -213,7 +213,6 @@ export default function Contact() {
                                     {/* Pesan — full width */}
                                     <div className="sm:col-span-2">
                                         <div className={`flex gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.pesan ? "border-red-400" : "border-gray-200 focus-within:border-blue-500"}`}>
-                                            <MessageCircle className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
                                             <textarea
                                                 name="pesan"
                                                 value={formData.pesan}
@@ -232,9 +231,9 @@ export default function Contact() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="bg-blue-700 hover:bg-blue-800 disabled:opacity-60 text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105 text-sm"
+                                        className="bg-[#FFD700] hover:bg-black disabled:opacity-60 text-black hover:text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 text-sm"
                                     >
-                                        {loading ? "Mengirim..." : "Kirim Pesan"}
+                                        {loading ? "Mengirim..." : "Kirim"}
                                     </button>
                                 </div>
                             </form>
