@@ -83,7 +83,8 @@ export default function Contact() {
                     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Let’s Start Green Energy Era </h1>
                     <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">Hubungi Kami </h1>
                     <p className="text-gray-300 text-sm sm:text-base max-w-4xl mb-10">
-                        Konsultasi gratis, simulasi penghematan, dan penawaran lebih lanjut. Hubungi kami sekarang dan wujudkan penghematan listrik dan masa depan energi yang berkelanjutan! 
+                        Konsultasi gratis, simulasi penghematan, dan penawaran lebih lanjut. 
+                        Hubungi kami sekarang dan wujudkan penghematan listrik dan masa depan energi yang berkelanjutan! 
                     </p>
 
                     {/* Contact pills */}
@@ -107,7 +108,7 @@ export default function Contact() {
             </section>
 
             {/* ── FORM SECTION ── */}
-            <section className="bg-gray-100 py-16 sm:py-20">
+            <section className="bg-white py-16 sm:py-20">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="text-center mb-10">
@@ -115,7 +116,7 @@ export default function Contact() {
                             Connect with us for the best offer
                         </h2>
                         <p className="mt-2 text-gray-500 text-sm sm:text-base">
-                            Kami siap membantu Anda dengan solusi energi terbaik untuk kebutuhan Anda
+                            Kami siap membantu memenuhi kebutuhan listrik Anda dengan solusi energi surya yang terjangkau.
                         </p>
                     </div>
 
