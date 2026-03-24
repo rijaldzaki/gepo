@@ -302,7 +302,7 @@ export default function Home() {
             <section className="relative min-h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: "url('../public/images/hero-bg.png')" }}
+                    style={{ backgroundImage: "url('/images/hero-bg.png')" }}
                 />
                 <div className="absolute inset-0 bg-gray-900/20" />
 
