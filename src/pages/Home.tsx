@@ -312,7 +312,7 @@ export default function Home() {
                         with <span className="text-[#FFD700] font-bold">Gepo Energy</span>
                     </h1>
                     <p className="text-white text-base sm:text-lg max-w-3xl mb-9 leading-relaxed">
-                        Solusi energi terbarukan yang efisien, ramah lingkungan, dan terjangkau untuk masa depan Indonesia yang berkelanjutan.
+                        Solusi energi surya yang efisien, ramah lingkungan, dan terjangkau untuk masa depan energi Indonesia yang berkelanjutan
                     </p>
                     <Link
                         to="/product"

@@ -27,7 +27,7 @@ const advisors = [
     {
         name: "Ahmad Agus Setiawan, S.T., M.Sc., Ph.D.",
         role: "Engineering Advisor",
-        photo: "/images/team/ferry-iskandar.jpg",
+        photo: "/images/team/AAS.png",
         desc: (
             <ul className="list-disc list-outside ml-5 space-y-2 text-gray-800">
             <li>Former Special Staff to the President of the Republic of Indonesia for Renewable Energy (2019–2024)</li>
@@ -39,7 +39,7 @@ const advisors = [
     {
         name: "Ir. Galuh Adi Insani, S,Pt., MSc., IPM.",
         role: "Business Advisor",
-        photo: "/images/team/ferry-iskandar.jpg",
+        photo: "/images/team/Galuh.png",
         desc: (
             <ul className="list-disc list-outside ml-5 space-y-2 text-gray-800">
             <li>Founder & Former Commissioner of Broiler-C (2020-2024)</li>
@@ -54,7 +54,7 @@ const leaders = [
     {
         name: "Maulana Istar, S.T.",
         role: "Chief Executive Officer",
-        photo: "/images/team/abil-imam.jpg",
+        photo: "/images/team/MaulanaIstar.png",
         desc: (
             <ul className="list-disc list-outside ml-5 space-y-2">
                 <li>Former Data Coordinator at PT Grafika in Decontamination Cs-137 Cikande</li>
@@ -66,11 +66,14 @@ const leaders = [
     {
         name: "Muhammad Rafif Taqiyuddin, S.T.",
         role: "Chief Marketing Officer",
-        photo: "/images/team/nadhfan.jpg",
+        photo: "/images/team/Rafif.png",
         desc: (
             <ul className="list-disc list-outside ml-5 space-y-2">
-                <li>Cementing Project Engineer Trainee at COSL </li>
+                <li>Shell LiveWire Energy Solution Winner 2024</li>
+                <li>Pertamuda Winner 2022</li>
+                <li>Outstanding Student at Faculty of Engineering Universitas Gadjah Mada</li>
             </ul>
+            
         ),
     },
 ];
@@ -444,7 +447,7 @@ export default function About() {
             <section className="py-16 sm:py-24 bg-gray-50 text-black">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-12">
-                        Pemimpin Solusi Energi Terbarukan di Indonesia
+                        C-Level Gepo Energy
                     </h2>
                     <div className="flex flex-wrap justify-center gap-8">
                         {leaders.map((leader, i) => (
