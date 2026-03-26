@@ -16,47 +16,46 @@ const stats: { value: number; decimal: number; suffix: string; label: string; ic
 ];
 
 const partners = [
-    { name: "UGM",                   logo: "/images/partners/ugm.png" },
-    { name: "Pertamina",             logo: "/images/partners/pertamina.png" },
-    { name: "Pertamina Foundation",  logo: "/images/partners/pertamina_foundation.png" },
-    { name: "Pertamuda",             logo: "/images/partners/pertamuda.png" },
-    { name: "Astra Innovlab",        logo: "/images/partners/astra_innovlab.png" },
-    { name: "Suzuki",                logo: "/images/partners/suzuki.png" },
-    { name: "Instellar",             logo: "/images/partners/instellar.png" },
-    { name: "Komdigi",               logo: "/images/partners/komdigi.png" },
-    { name: "Nexus",                 logo: "/images/partners/nexus.png" },
-    { name: "DIY",                   logo: "/images/partners/DIY.png" },
-    { name: "Shell",                 logo: "/images/partners/shell.png" },
-    { name: "Sonus",                 logo: "/images/partners/sonushub.png" },
-    { name: "Wakaf Energi",          logo: "/images/partners/wakaf_energi.png" },
+    { name: "UGM",                  logo: "/images/partners/ugm.png" },
+    { name: "Pertamina",            logo: "/images/partners/pertamina.png" },
+    { name: "Pertamina Foundation", logo: "/images/partners/pertamina_foundation.png" },
+    { name: "Pertamuda",            logo: "/images/partners/pertamuda.png" },
+    { name: "Nexus",                logo: "/images/partners/nexus.png" },
+    { name: "Shell",                logo: "/images/partners/shell.png" },
+    { name: "Suzuki",               logo: "/images/partners/suzuki.png" },
+    { name: "Instellar",            logo: "/images/partners/instellar.png" },
+    { name: "Komdigi",              logo: "/images/partners/komdigi.png" },
+    { name: "Astra Innovlab",       logo: "/images/partners/astra_innovlab.png" },
+    { name: "DIY",                  logo: "/images/partners/DIY.png" },
+    { name: "Sonus",                logo: "/images/partners/sonushub.png" },
+    { name: "Wakaf Energi",         logo: "/images/partners/wakaf_energi.png" },
 ];
 
 // Sertifikasi — NIB punya 3 slides, yang lain 1 slide
 const sertifikasi = [
     {
         id: "nib",
-        title: "NIB",
-        subtitle: "Nomor Induk Berusaha",
-        desc: "Sertifikat Perizinan Usaha Berbasis Risiko yang valid dan diakui pemerintah.",
+        title: "Nomor Induk Berusaha (NIB)",
+        subtitle: "",
+        desc: "Perizinan Berusaha Berbasis Risiko",
         slides: [
-            "/images/sertifikat/nib-1.jpg",
-            "/images/sertifikat/nib-2.jpg",
-            "/images/sertifikat/nib-3.jpg",
+            "/images/nib.jpeg",
+            "/images/nib2.jpeg",
         ],
     },
     {
         id: "sk",
         title: "SK Kemenkumham",
-        subtitle: "Surat Keputusan",
-        desc: "Surat Keputusan pengesahan badan hukum dari Kementerian Hukum dan HAM Republik Indonesia.",
-        slides: ["/images/sertifikat/sk-kemenkumham.jpg"],
+        subtitle: "",
+        desc: "Pengesahan Pendirian Badan Hukum Perseroan Terbatas",
+        slides: ["/images/kemhumham.jpeg"],
     },
     {
         id: "iso",
         title: "ISO 9001:2015",
-        subtitle: "Manajemen Mutu",
-        desc: "Sertifikasi sistem manajemen mutu internasional yang memastikan standar kualitas produk dan layanan.",
-        slides: ["/images/sertifikat/iso-9001.jpg"],
+        subtitle: "",
+        desc: "Sistem Manajemen Mutu",
+        slides: ["/images/iso.jpeg"],
     },
 ];
 
@@ -74,7 +73,7 @@ const advisors = [
         reverse: false,
     },
     {
-        name: "Ir. Galuh Adi Insani, S,Pt., MSc., IPM.",
+        name: "Ir. Galuh Adi Insani, S.Pt., MSc., IPM.",
         role: "Business Advisor",
         photo: "/images/team/Galuh.png",
         desc: (
@@ -115,92 +114,68 @@ const leaders = [
 ];
 
 // ── MARQUEE ───────────────────────────────────────────────────────────────────
-// Kunci seamless:
-// 1. Render item DUA kali dalam satu flex row tanpa padding/gap di luar
-// 2. Setiap item punya margin kanan yang seragam (gap diganti mx)
-// 3. Animasi geser tepat -50% (lebar set pertama = set kedua)
-// 4. will-change: transform agar GPU yang handle, tidak patah-patah
+// Teknik: fixed width per slot + pixel translation
+// Tidak bergantung pada ukuran gambar → tidak ada layout shift → benar-benar infinity
+const ITEM_W   = 148; // px — lebar slot tiap logo  (ubah jika perlu)
+const ITEM_GAP = 54;  // px — jarak antar slot       (ubah jika perlu)
+const SET_PX   = partners.length * (ITEM_W + ITEM_GAP); // lebar tepat satu set
 
-const ITEM_GAP = 54; // px — jarak antar logo (ubah di sini jika perlu)
+function PartnerSlot({ p }: { p: typeof partners[0] }) {
+    const [err, setErr] = useState(false);
+    return (
+        <div
+            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-300"
+            style={{ width: `${ITEM_W}px`, height: "96px", marginRight: `${ITEM_GAP}px` }}
+        >
+            {!err ? (
+                <img
+                    src={p.logo}
+                    alt={p.name}
+                    style={{ maxHeight: "64px", maxWidth: `${ITEM_W}px`, objectFit: "contain" }}
+                    onError={() => setErr(true)}
+                />
+            ) : (
+                <span style={{ fontSize: "11px", fontWeight: 700, color: "#9ca3af", textAlign: "center", lineHeight: "1.3" }}>
+                    {p.name}
+                </span>
+            )}
+        </div>
+    );
+}
 
 function Marquee() {
-    // Durasi: makin banyak item, makin lambat agar tidak terlalu cepat
-    const duration = partners.length * 1; // detik
+    const duration = partners.length * 2.8; // detik
 
     return (
-        <div className="overflow-hidden relative w-full">
+        <div className="overflow-hidden relative w-full" style={{ height: "96px" }}>
             {/* Fade kiri */}
-            <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to right, white 40%, transparent)" }} />
+            <div className="absolute left-0 top-0 bottom-0 w-28 z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to right, white 50%, transparent)" }} />
             {/* Fade kanan */}
-            <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to left, white 40%, transparent)" }} />
+            <div className="absolute right-0 top-0 bottom-0 w-28 z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to left, white 50%, transparent)" }} />
 
-            {/* Track — satu baris, dua set identik, tidak ada padding luar */}
+            {/* Track — lebar pasti 2× set, geser tepat 1 set (px) lalu reset — seamless */}
             <div
-                className="flex"
                 style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    display: "flex",
+                    width: `${SET_PX * 2}px`,
                     willChange: "transform",
-                    animation: `marquee-scroll ${duration}s linear infinite`,
+                    animation: `mq-infinite ${duration}s linear infinite`,
                 }}
             >
-                {/* Set A */}
-                {partners.map((p, i) => (
-                    <div
-                        key={`a-${i}`}
-                        className="flex-shrink-0 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                            height: "96px",
-                            marginRight: `${ITEM_GAP}px`,
-                        }}
-                    >
-                        <img
-                            src={p.logo}
-                            alt={p.name}
-                            className="h-16 w-auto max-w-[120px] object-contain"
-                            onError={(e) => {
-                                // Tampilkan nama teks jika logo belum ada
-                                const el = e.target as HTMLImageElement;
-                                el.style.display = "none";
-                                const span = document.createElement("span");
-                                span.textContent = p.name;
-                                span.style.cssText = "font-size:12px;font-weight:700;color:#9ca3af;white-space:nowrap;";
-                                el.parentElement?.appendChild(span);
-                            }}
-                        />
-                    </div>
-                ))}
-                {/* Set B — identik persis dengan Set A */}
-                {partners.map((p, i) => (
-                    <div
-                        key={`b-${i}`}
-                        className="flex-shrink-0 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                            height: "96px",
-                            marginRight: `${ITEM_GAP}px`,
-                        }}
-                    >
-                        <img
-                            src={p.logo}
-                            alt={p.name}
-                            className="h-16 w-auto max-w-[120px] object-contain"
-                            onError={(e) => {
-                                const el = e.target as HTMLImageElement;
-                                el.style.display = "none";
-                                const span = document.createElement("span");
-                                span.textContent = p.name;
-                                span.style.cssText = "font-size:12px;font-weight:700;color:#9ca3af;white-space:nowrap;";
-                                el.parentElement?.appendChild(span);
-                            }}
-                        />
-                    </div>
+                {[...partners, ...partners].map((p, i) => (
+                    <PartnerSlot key={i} p={p} />
                 ))}
             </div>
 
             <style>{`
-                @keyframes marquee-scroll {
-                    0%   { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
+                @keyframes mq-infinite {
+                    from { transform: translateX(0px); }
+                    to   { transform: translateX(-${SET_PX}px); }
                 }
             `}</style>
         </div>
@@ -274,36 +249,62 @@ function StatsRow() {
     );
 }
 
-// ── CERT CARD — portrait A4 + slider ─────────────────────────────────────────
+// ── CERT CARD — portrait A4 + auto-slide + dot overlay ───────────────────────
 function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
     const [slide, setSlide] = useState(0);
-    const [imgError, setImgError] = useState(false);
     const hasMultiple = cert.slides.length > 1;
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    const prev = () => { setImgError(false); setSlide((s) => (s - 1 + cert.slides.length) % cert.slides.length); };
-    const next = () => { setImgError(false); setSlide((s) => (s + 1) % cert.slides.length); };
+    // Auto-slide setiap 3 detik — hanya jika lebih dari 1 slide
+    useEffect(() => {
+        if (!hasMultiple) return;
+        timerRef.current = setInterval(() => {
+            setSlide((s) => (s + 1) % cert.slides.length);
+        }, 5000);
+        return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    }, [cert.slides.length, hasMultiple]);
+
+    // Klik manual → reset timer agar tidak langsung loncat setelah diklik
+    const goTo = (i: number) => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        setSlide(i);
+        if (hasMultiple) {
+            timerRef.current = setInterval(() => {
+                setSlide((s) => (s + 1) % cert.slides.length);
+            }, 5000);
+        }
+    };
+
+    const prev = () => goTo((slide - 1 + cert.slides.length) % cert.slides.length);
+    const next = () => goTo((slide + 1) % cert.slides.length);
 
     return (
-        <div className="flex flex-col rounded-2xl overflow-hidden border border-gray-200 bg-white hover:shadow-xl transition-shadow duration-300">
+        <div className="flex flex-col rounded-2xl overflow-hidden bg-white shadow-lg h-full">
 
             {/* Foto area — rasio A4 (1 : √2 ≈ 1 : 1.414) */}
-            <div className="relative w-full bg-gray-50" style={{ aspectRatio: "1 / 1.414" }}>
-                {!imgError ? (
-                    <img
-                        key={cert.slides[slide]}
-                        src={cert.slides[slide]}
-                        alt={`${cert.title} halaman ${slide + 1}`}
-                        className="absolute inset-0 w-full h-full object-contain p-4"
-                        onError={() => setImgError(true)}
-                    />
-                ) : (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-300">
-                        <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span className="text-xs font-medium">{cert.title}</span>
-                    </div>
-                )}
+            <div className="relative w-full bg-white overflow-hidden" style={{ aspectRatio: "1 / 1.414" }}>
+                <div
+                    className="absolute inset-0 flex"
+                    style={{
+                        width: `${cert.slides.length * 100}%`,
+                        transform: `translateX(-${slide * (100 / cert.slides.length)}%)`,
+                        transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    }}
+                >
+                    {cert.slides.map((src, i) => (
+                        <div
+                            key={i}
+                            className="relative flex-shrink-0 flex items-center justify-center p-4"
+                            style={{ width: `${100 / cert.slides.length}%`, height: "100%" }}
+                        >
+                            <img
+                                src={src}
+                                alt={`${cert.title} halaman ${i + 1}`}
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                    ))}
+                </div>
 
                 {/* Prev / Next buttons */}
                 {hasMultiple && (
@@ -317,20 +318,17 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
                             <ChevronRight className="w-4 h-4 text-gray-700" />
                         </button>
 
-                        {/* Page counter */}
-                        <span className="absolute top-2 right-2 text-xs font-bold bg-black/50 text-white px-2 py-0.5 rounded-full z-10">
-                            {slide + 1} / {cert.slides.length}
-                        </span>
-
-                        {/* Dot indicators */}
+                        {/* Dot indicators — overlay di dalam area foto, paling bawah */}
                         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                             {cert.slides.map((_, i) => (
-                                <button key={i} onClick={() => { setImgError(false); setSlide(i); }}
-                                    className="rounded-full transition-all duration-200"
+                                <button
+                                    key={i}
+                                    onClick={() => goTo(i)}
+                                    className="rounded-full transition-all duration-300"
                                     style={{
                                         width: slide === i ? "18px" : "6px",
                                         height: "6px",
-                                        background: slide === i ? "#FFD700" : "rgba(0,0,0,0.2)",
+                                        background: slide === i ? "#FFD700" : "rgba(0,0,0,0.25)",
                                     }}
                                     aria-label={`Halaman ${i + 1}`}
                                 />
@@ -340,9 +338,9 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
                 )}
             </div>
 
-            {/* Info area */}
+            {/* Info area — tidak ada dot di sini, gambar tidak tercrop */}
             <div className="p-5 border-t border-gray-100">
-                <h3 className="font-extrabold text-gray-900 text-base mb-0.5">{cert.title}</h3>
+                <h3 className="font-extrabold text-black text-base mb-0.5">{cert.title}</h3>
                 <p className="text-xs font-bold text-[#b59a00] uppercase tracking-wider mb-2">{cert.subtitle}</p>
                 <p className="text-sm text-gray-500 leading-relaxed">{cert.desc}</p>
             </div>
@@ -436,12 +434,9 @@ export default function About() {
             {/* ── SERTIFIKASI & LEGALITAS ── */}
             <section className="py-14 sm:py-16 bg-gray-50">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-2">Sertifikasi & Legalitas</h2>
-                    <p className="text-center text-gray-500 text-sm mb-10">
-                        Dokumen resmi yang memvalidasi operasional dan standar mutu perusahaan
-                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-10">Sertifikat & Legalitas</h2>
                     {/* Grid 3 kolom — kartu portrait A4 */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-start">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-stretch">
                         {sertifikasi.map((cert) => (
                             <CertCard key={cert.id} cert={cert} />
                         ))}
@@ -469,16 +464,16 @@ export default function About() {
             {/* ── BOARD OF ADVISORY ── */}
             {advisors.map((advisor, i) => (
                 <section key={i} className="py-14 sm:py-16 bg-white">
-                    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-5xl  mx-auto px-8 sm:px-6">
                         <div className={`flex flex-col ${advisor.reverse ? "md:flex-row-reverse" : "md:flex-row"} gap-10 sm:gap-16 items-center`}>
                             <div className="flex-shrink-0 w-full md:w-72">
-                                <div className="rounded-2xl overflow-hidden bg-gray-200 aspect-[3/4]">
+                                <div className="rounded-2xl overflow-hidden bg-gray-200 aspect-[3/4] shadow-lg">
                                     <img src={advisor.photo} alt={advisor.name} className="w-full h-full object-cover"
                                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm font-bold tracking-widest uppercase text-[#b59a00] mb-2">{advisor.role}</p>
+                                <p className="text-sm font-bold tracking-widest uppercase text-[#FFD700] mb-2">{advisor.role}</p>
                                 <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4">{advisor.name}</h2>
                                 <div className="text-gray-600 leading-relaxed">{advisor.desc}</div>
                             </div>
@@ -494,7 +489,7 @@ export default function About() {
                     <div className="flex flex-wrap justify-center gap-8">
                         {leaders.map((leader, i) => (
                             <div key={i}
-                                className="flex flex-col rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:ring-2 hover:ring-[#FFD700] transition-all duration-300 bg-white w-full sm:w-[320px] lg:w-[300px]"
+                                className="flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#FFD700] transition-all duration-300 bg-black w-full sm:w-[320px] lg:w-[300px]"
                             >
                                 {/* ── FOTO — sesuaikan aspect ratio di sini ── */}
                                 {/*
@@ -504,7 +499,7 @@ export default function About() {
                                     - object-center = foto rata tengah
                                 */}
                                 <div
-                                    className="w-full overflow-hidden bg-gray-100"
+                                    className="w-full overflow-hidden"
                                     style={{ aspectRatio: "3 / 4" }}
                                 >
                                     <img
@@ -518,7 +513,7 @@ export default function About() {
                                                 el.parentElement.style.display = "flex";
                                                 el.parentElement.style.alignItems = "center";
                                                 el.parentElement.style.justifyContent = "center";
-                                                el.parentElement.style.color = "#9ca3af";
+                                                el.parentElement.style.color = "";
                                                 el.parentElement.style.fontSize = "13px";
                                                 el.parentElement.innerText = "[ Foto ]";
                                             }
@@ -527,12 +522,12 @@ export default function About() {
                                 </div>
 
                                 {/* ── TEKS — sepenuhnya di bawah foto, tidak overlap ── */}
-                                <div className="p-5 border-t border-gray-100">
+                                <div className="p-5 ">
                                     <div className="border-l-4 border-[#FFD700] pl-3 mb-3">
-                                        <h3 className="font-bold text-gray-900 text-base leading-snug">{leader.name}</h3>
-                                        <p className="text-[#b59a00] text-sm font-semibold mt-0.5">{leader.role}</p>
+                                        <h3 className="font-bold text-white text-base leading-snug">{leader.name}</h3>
+                                        <p className="text-[#FFD700] text-sm font-semibold mt-0.5">{leader.role}</p>
                                     </div>
-                                    <div className="text-gray-600 text-sm leading-relaxed">
+                                    <div className="text-white text-sm leading-relaxed">
                                         {leader.desc}
                                     </div>
                                 </div>

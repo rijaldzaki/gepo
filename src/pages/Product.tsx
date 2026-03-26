@@ -105,9 +105,10 @@ const services = [
 function ProductCard({ product }: { product: typeof products[0] }) {
     const Icon = product.icon;
     return (
-        <div className="grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+        <div className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100">
             {/* Left — info */}
-            <div className="flex flex-col justify-between p-8 sm:p-10 bg-white">
+            {/* Mengambil 3 dari 5 kolom pada layar medium ke atas (60% width) */}
+            <div className="md:col-span-3 flex flex-col justify-between p-8 sm:p-10 bg-white">
                 {/* Badge */}
                 <div>
                     <span
@@ -161,13 +162,22 @@ function ProductCard({ product }: { product: typeof products[0] }) {
             </div>
 
             {/* Right — photo */}
-            <div className="relative bg-gray-100 min-h-[260px] md:min-h-0">
+            {/* Mengambil 2 dari 5 kolom pada layar medium ke atas (40% width) */}
+            <div className="md:col-span-2 relative bg-gray-50 min-h-[260px] md:min-h-0 flex items-center justify-center p-8">
+                {/* Gradient overlay bottom (tetap dipertahankan sebagai background) */}
+                <div
+                    className="absolute inset-0 opacity-40 z-0"
+                    style={{ background: `linear-gradient(to top, ${product.accent}60, transparent)` }}
+                />
+
                 <img
                     src={product.photo}
                     alt={product.name}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="relative z-10 w-full h-full object-contain max-h-[400px] drop-shadow-2xl transition-transform hover:scale-105 duration-300"
                     onError={(e) => {
-                        const el = e.target as HTMLImageElement;
+                        // Tambahkan "as HTMLImageElement" di baris ini
+                        const el = e.target as HTMLImageElement; 
+                        
                         el.style.display = "none";
                         if (el.parentElement) {
                             el.parentElement.style.display = "flex";
@@ -175,11 +185,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                             el.parentElement.style.justifyContent = "center";
                         }
                     }}
-                />
-                {/* Gradient overlay bottom */}
-                <div
-                    className="absolute inset-0 opacity-30"
-                    style={{ background: `linear-gradient(to top, ${product.accent}60, transparent)` }}
                 />
             </div>
         </div>
@@ -320,7 +325,7 @@ export default function Product() {
             <section className="py-20 sm:py-28 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FFD700] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
+                        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FAAD04] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
                             Solusi Lengkap Kami
                         </span>
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
