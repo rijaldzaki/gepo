@@ -216,6 +216,19 @@ export default function Project() {
 
     return (
         <div className="bg-white text-gray-900">
+            {/* ── HERO ── */}
+            <section className="relative bg-gray-900 text-white text-center overflow-hidden h-[50vh] flex items-center justify-center">
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: "url('/images/about-bg.png')" }}
+                />
+                <div className="absolute inset-0 bg-gray-900/20" />
+                <div className="relative z-10 max-w-3xl mx-auto px-4">
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                        Tentang Gepo Energy
+                    </h1>
+                </div>
+            </section>
             <section className="py-10 text-center border-b border-gray-100">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-widest uppercase text-gray-900">
                     Portfolio of Projects

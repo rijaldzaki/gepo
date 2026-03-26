@@ -386,26 +386,6 @@ export default function Product() {
                     </div>
                 </div>
             </section>
-
-            {/* ── BOTTOM CTA ── */}
-            <section className="py-16 bg-gray-950">
-                <div className="max-w-3xl mx-auto px-4 text-center">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-                        Siap Beralih ke Energi Surya?
-                    </h2>
-                    <p className="text-gray-400 mb-8">
-                        Hubungi tim Gepo Energy sekarang untuk penawaran terbaik dan konsultasi gratis tanpa komitmen.
-                    </p>
-                    <Link
-                        to="/contact"
-                        className="inline-flex items-center gap-2 bg-[#FFD700] hover:bg-[#FFD700]/80 text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 no-underline text-sm"
-                    >
-                        Hubungi Kami Sekarang
-                        <ChevronRight className="w-4 h-4" />
-                    </Link>
-                </div>
-            </section>
-
         </div>
     );
 }

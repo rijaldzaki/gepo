@@ -453,10 +453,10 @@ export default function About() {
                         {leaders.map((leader, i) => (
                             <div
                                 key={i}
-                                className="flex flex-col bg-gray-800 rounded-2xl overflow-hidden hover:ring-2 hover:ring-[#FFD700] transition-all duration-300 w-full sm:min-w-[320px] lg:min-w-[280px] max-w-[350px]"
+                                className="flex flex-col bg-black rounded-2xl overflow-hidden hover:ring-2 hover:ring-[#FFD700] transition-all duration-300 w-full sm:min-w-[320px] lg:min-w-[280px] max-w-[350px]"
                             >
                                 {/* Photo */}
-                                <div className="bg-gray-700 aspect-[4/3] w-full overflow-hidden">
+                                <div className="bg-gray-700 aspect-[3/3] w-full overflow-hidden">
                                     <img
                                         src={leader.photo}
                                         alt={leader.name}
