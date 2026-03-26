@@ -454,7 +454,7 @@ export default function About() {
                         Unduh profil perusahaan kami untuk menjalajahi perjalanan, misi, dan nilai-nilai inti kami.
                         Pelajari tentang cerita kami, apa yang mendorong kami, dan bagaimana kami berusaha memberikan dampak yang lebih baik.
                     </p>
-                    <a href="/files/company-profile.pdf" download
+                    <a href="/files/compro.pdf" download
                         className="inline-flex items-center gap-2 border border-white hover:bg-white text-white hover:text-black font-semibold px-7 py-3 rounded-full transition-all duration-300 no-underline">
                         <Download className="w-4 h-4" />Unduh
                     </a>

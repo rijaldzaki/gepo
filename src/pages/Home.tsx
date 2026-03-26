@@ -17,10 +17,19 @@ const stats: { value: number; decimal: number; suffix: string; label: string; ic
 ];
 
 const partners = [
-    { name: "UGM", logo: "/images/partners/ugm.png" },
-    { name: "UGM", logo: "/images/partners/ugm.png" },
-    { name: "UGM", logo: "/images/partners/ugm.png" },
-    { name: "UGM", logo: "/images/partners/ugm.png" },
+    { name: "UGM",                  logo: "/images/partners/ugm.png" },
+    { name: "Pertamina",            logo: "/images/partners/pertamina.png" },
+    { name: "Pertamina Foundation", logo: "/images/partners/pertamina_foundation.png" },
+    { name: "Pertamuda",            logo: "/images/partners/pertamuda.png" },
+    { name: "Nexus",                logo: "/images/partners/nexus.png" },
+    { name: "Shell",                logo: "/images/partners/shell.png" },
+    { name: "Suzuki",               logo: "/images/partners/suzuki.png" },
+    { name: "Instellar",            logo: "/images/partners/instellar.png" },
+    { name: "Komdigi",              logo: "/images/partners/komdigi.png" },
+    { name: "Astra Innovlab",       logo: "/images/partners/astra_innovlab.png" },
+    { name: "DIY",                  logo: "/images/partners/DIY.png" },
+    { name: "Sonus",                logo: "/images/partners/sonushub.png" },
+    { name: "Wakaf Energi",         logo: "/images/partners/wakaf_energi.png" },
 ];
 
 const products = [
@@ -30,7 +39,7 @@ const products = [
         title: "Panel Surya Monofacial",
         subtitle: "Pilihan Terpercaya & Terjangkau",
         desc: "Teknologi panel surya paling populer di Indonesia. Panel ini menangkap sinar matahari dari sisi depan dengan efisiensi tinggi, tersedia dalam berbagai ukuran daya yang menyesuaikan kebutuhan listrik Anda.",
-        photo: "/images/products/monofacial.jpg",
+        photo: "/images/products/mono1.jpg",
         icon: Sun,
     },
     {
@@ -39,7 +48,7 @@ const products = [
         title: "Panel Surya Bifacial",
         subtitle: "Produksi Listrik Ekstra hingga 30%",
         desc: "Panel surya bifacial menyerap cahaya dari sisi depan dan belakang, memanfaatkan pantulan cahaya untuk menghasilkan hingga 30% energi lebih banyak dibanding panel monofacial.",
-        photo: "/images/products/bifacial.jpg",
+        photo: "/images/products/bifacial1.png",
         icon: Layers,
     },
     {
@@ -48,7 +57,7 @@ const products = [
         title: "Panel Surya Rooftile",
         subtitle: "Elegan & Terintegrasi",
         desc: "Building Integrated Photovoltaic (BIPV) menggantikan atap genteng konvensional. Tampilan seamless, modern, dan estetis — atap Anda langsung menjadi sumber energi hijau.",
-        photo: "/images/products/rooftile.jpg",
+        photo: "/images/products/rooftile1.png",
         icon: Zap,
     },
     {
@@ -171,30 +180,68 @@ function StatsRow() {
 }
 
 // ── MARQUEE ───────────────────────────────────────────────────────────────────
-const PartnerItem = ({ p }: { p: typeof partners[0] }) => (
-    <div className="flex-shrink-0 flex items-center justify-center h-32 px-4 transition-all duration-300 opacity-60 hover:opacity-100">
-        <img src={p.logo} alt={p.name} className="h-28 sm:h-32 w-auto object-contain" />
-    </div>
-);
+// Teknik: fixed width per slot + pixel translation
+// Tidak bergantung pada ukuran gambar → tidak ada layout shift → benar-benar infinity
+const ITEM_W   = 148; // px — lebar slot tiap logo  (ubah jika perlu)
+const ITEM_GAP = 54;  // px — jarak antar slot       (ubah jika perlu)
+const SET_PX   = partners.length * (ITEM_W + ITEM_GAP); // lebar tepat satu set
+
+function PartnerSlot({ p }: { p: typeof partners[0] }) {
+    const [err, setErr] = useState(false);
+    return (
+        <div
+            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-300"
+            style={{ width: `${ITEM_W}px`, height: "96px", marginRight: `${ITEM_GAP}px` }}
+        >
+            {!err ? (
+                <img
+                    src={p.logo}
+                    alt={p.name}
+                    style={{ maxHeight: "64px", maxWidth: `${ITEM_W}px`, objectFit: "contain" }}
+                    onError={() => setErr(true)}
+                />
+            ) : (
+                <span style={{ fontSize: "11px", fontWeight: 700, color: "#9ca3af", textAlign: "center", lineHeight: "1.3" }}>
+                    {p.name}
+                </span>
+            )}
+        </div>
+    );
+}
 
 function Marquee() {
+    const duration = partners.length * 2.8; // detik
+
     return (
-        <div className="overflow-hidden relative w-full">
-            <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-white to-transparent pointer-events-none" />
-            <div className="flex w-max animate-marquee-infinite">
-                <div className="flex gap-12 items-center px-5">
-                    {partners.map((p, i) => <PartnerItem key={`a-${i}`} p={p} />)}
-                </div>
-                <div className="flex gap-12 items-center px-5">
-                    {partners.map((p, i) => <PartnerItem key={`b-${i}`} p={p} />)}
-                </div>
+        <div className="overflow-hidden relative w-full" style={{ height: "96px" }}>
+            {/* Fade kiri */}
+            <div className="absolute left-0 top-0 bottom-0 w-28 z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to right, white 50%, transparent)" }} />
+            {/* Fade kanan */}
+            <div className="absolute right-0 top-0 bottom-0 w-28 z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to left, white 50%, transparent)" }} />
+
+            {/* Track — lebar pasti 2× set, geser tepat 1 set (px) lalu reset — seamless */}
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    display: "flex",
+                    width: `${SET_PX * 2}px`,
+                    willChange: "transform",
+                    animation: `mq-infinite ${duration}s linear infinite`,
+                }}
+            >
+                {[...partners, ...partners].map((p, i) => (
+                    <PartnerSlot key={i} p={p} />
+                ))}
             </div>
+
             <style>{`
-                .animate-marquee-infinite { animation: marquee 5s linear infinite; }
-                @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
+                @keyframes mq-infinite {
+                    from { transform: translateX(0px); }
+                    to   { transform: translateX(-${SET_PX}px); }
                 }
             `}</style>
         </div>
@@ -327,9 +374,9 @@ export default function Home() {
             </section>
 
             {/* ── PARTNER ── */}
-            <section className="py-12 sm:py-20 px-8">
-                <p className="text-center text-3xl sm:text-4xl font-bold text-black mb-20 tracking-tight">
-                    Partner & Kolaborasi
+            <section className="py-14 sm:py-16 px-8">
+                <p className="text-center text-2xl sm:text-3xl font-bold text-black mb-16 tracking-tight">
+                    Partner & <span className="text-[#FFD700] font-bold">Kolaborasi</span>
                 </p>
                 <Marquee />
             </section>
