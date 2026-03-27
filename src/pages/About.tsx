@@ -279,7 +279,7 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
     const next = () => goTo((slide + 1) % cert.slides.length);
 
     return (
-        <div className="flex flex-col rounded-2xl overflow-hidden bg-white shadow-lg h-full">
+        <div className="flex flex-col rounded-2xl overflow-hidden bg-white shadow-lg h-full hover:scale-103 transition-all duration-300">
 
             {/* Foto area — rasio A4 (1 : √2 ≈ 1 : 1.414) */}
             <div className="relative w-full bg-white overflow-hidden" style={{ aspectRatio: "1 / 1.414" }}>
@@ -354,9 +354,9 @@ export default function About() {
         <div className="bg-white text-gray-900">
 
             {/* ── HERO ── */}
-            <section className="relative bg-gray-900 text-white text-center overflow-hidden h-[50vh] flex items-center justify-center">
+            <section className="relative bg-gray-900 text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/about-bg.png')" }} />
-                <div className="absolute inset-0 bg-gray-900/20" />
+                <div className="absolute inset-0 bg-gray-900/50" />
                 <div className="relative z-10 max-w-3xl mx-auto px-4">
                     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Tentang Gepo Energy</h1>
                 </div>
@@ -467,7 +467,7 @@ export default function About() {
                     <div className="max-w-5xl  mx-auto px-8 sm:px-6">
                         <div className={`flex flex-col ${advisor.reverse ? "md:flex-row-reverse" : "md:flex-row"} gap-10 sm:gap-16 items-center`}>
                             <div className="flex-shrink-0 w-full md:w-72">
-                                <div className="rounded-2xl overflow-hidden bg-gray-200 aspect-[3/4] shadow-lg">
+                                <div className="rounded-2xl overflow-hidden bg-gray-200 aspect-[3/4] shadow-lg transition-all duration-500 hover:scale-105">
                                     <img src={advisor.photo} alt={advisor.name} className="w-full h-full object-cover"
                                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                                 </div>
@@ -482,22 +482,17 @@ export default function About() {
                 </section>
             ))}
 
-            {/* ── C-LEVEL — foto atas, teks bawah, benar-benar terpisah ── */}
+            {/*C-LEVEL*/}
             <section className="py-16 sm:py-24 bg-gray-50 text-black">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-12">C-Level Gepo Energy</h2>
                     <div className="flex flex-wrap justify-center gap-8">
                         {leaders.map((leader, i) => (
                             <div key={i}
-                                className="flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#FFD700] transition-all duration-300 bg-black w-full sm:w-[320px] lg:w-[300px]"
+                                // PERBAIKAN: bg-black DIHAPUS dari sini agar sudut atas transparan (mengikuti bg-gray-50)
+                                className="flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#FFD700] hover:scale-101 transition-all duration-500 w-full sm:w-[320px] lg:w-[300px]"
                             >
-                                {/* ── FOTO — sesuaikan aspect ratio di sini ── */}
-                                {/*
-                                    Untuk mengubah ukuran foto:
-                                    - Ganti nilai aspectRatio, misal "1/1" untuk kotak, "3/4" untuk portrait
-                                    - object-top = foto rata atas (cocok untuk foto orang)
-                                    - object-center = foto rata tengah
-                                */}
+                                {/* ── FOTO ── */}
                                 <div
                                     className="w-full overflow-hidden"
                                     style={{ aspectRatio: "3 / 4" }}
@@ -505,7 +500,7 @@ export default function About() {
                                     <img
                                         src={leader.photo}
                                         alt={leader.name}
-                                        className="w-full h-full object-cover object-top"
+                                        className="w-full h-full object-cover object-top scale-[1.01]"
                                         onError={(e) => {
                                             const el = e.target as HTMLImageElement;
                                             el.style.display = "none";
@@ -513,7 +508,8 @@ export default function About() {
                                                 el.parentElement.style.display = "flex";
                                                 el.parentElement.style.alignItems = "center";
                                                 el.parentElement.style.justifyContent = "center";
-                                                el.parentElement.style.color = "";
+                                                el.parentElement.style.backgroundColor = "#000"; // Fallback hitam jika foto error
+                                                el.parentElement.style.color = "#fff";
                                                 el.parentElement.style.fontSize = "13px";
                                                 el.parentElement.innerText = "[ Foto ]";
                                             }
@@ -521,8 +517,9 @@ export default function About() {
                                     />
                                 </div>
 
-                                {/* ── TEKS — sepenuhnya di bawah foto, tidak overlap ── */}
-                                <div className="p-5 ">
+                                {/* ── TEKS ── */}
+                                {/* PERBAIKAN: bg-black dipindahkan ke sini. flex-1 memastikan warna hitam mengisi sisa kartu ke bawah */}
+                                <div className="p-5 bg-black flex-1"> 
                                     <div className="border-l-4 border-[#FFD700] pl-3 mb-3">
                                         <h3 className="font-bold text-white text-base leading-snug">{leader.name}</h3>
                                         <p className="text-[#FFD700] text-sm font-semibold mt-0.5">{leader.role}</p>

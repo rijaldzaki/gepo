@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ChevronRight, Zap, Sun, Layers, Cpu, ClipboardList, Wrench, Activity } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, Diamond, Layers2, Grid3X3, Cpu, ClipboardList, Wrench, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
@@ -7,8 +7,7 @@ import { Link } from "react-router-dom";
 const products = [
     {
         id: "monofacial",
-        icon: Sun,
-        badge: "Paling Populer",
+        icon: Diamond,
         name: "Panel Surya Monofacial",
         tagline: "Pilihan Terpercaya & Terjangkau",
         subtitle: "Hemat Listrik Cepat & Mudah",
@@ -20,13 +19,14 @@ const products = [
             "Penghematan tagihan listrik hingga 70%",
         ],
         cta: "Cocok untuk Anda yang ingin mulai menggunakan PLTS tanpa ribet.",
-        photo: "/images/products/monofacial.jpg",
+        photos: [
+            "/images/products/monofacial1.jpg",
+        ],
         accent: "#FFD700",
     },
     {
         id: "bifacial",
-        icon: Layers,
-        badge: "Produksi Ekstra",
+        icon: Layers2,
         name: "Panel Surya Bifacial",
         tagline: "Teknologi Dua Sisi",
         subtitle: "Produksi Listrik Ekstra hingga 30%",
@@ -37,13 +37,14 @@ const products = [
             "Desain tahan lama dengan panel dua sisi",
         ],
         cta: "Pilih bifacial jika Anda ingin maksimalkan hasil investasi dan memanfaatkan setiap sinar matahari.",
-        photo: "/images/products/bifacial.jpg",
-        accent: "#3b82f6",
+        photos: [
+            "/images/products/bifacial1.png",
+        ],
+        accent: "#E38E00",
     },
     {
         id: "rooftile",
-        icon: Zap,
-        badge: "Premium",
+        icon: Grid3X3,
         name: "Panel Surya Rooftile",
         tagline: "Elegan & Terintegrasi",
         subtitle: "Atap Jadi Pembangkit Listrik Indah",
@@ -54,13 +55,15 @@ const products = [
             "Nilai jangka panjang tak tertandingi",
         ],
         cta: "Investasi lebih tinggi, tapi energi bersih + desain futuristik + kontribusi nyata keberlanjutan.",
-        photo: "/images/products/rooftile.jpg",
-        accent: "#10b981",
+        photos: [
+            "/images/products/rooftile1.png",
+            "/images/products/rooftile2.png",
+        ],
+        accent: "#D25738",
     },
     {
         id: "smartcontrol",
         icon: Cpu,
-        badge: "IoT",
         name: "Smart Control System",
         tagline: "Sistem Pintar di Balik PLTS Anda",
         subtitle: "Monitor & Kontrol Real-Time 24/7",
@@ -71,8 +74,10 @@ const products = [
             "Integrasi penuh dengan komponen sistem PLTS",
         ],
         cta: "Kendalikan energi Anda dari genggaman tangan.",
-        photo: "/images/products/smartcontrol.jpg",
-        accent: "#8b5cf6",
+        photos: [
+            "/images/products/smart-control.png",
+        ],
+        accent: "#9D3115",
     },
 ];
 
@@ -100,24 +105,90 @@ const services = [
     },
 ];
 
-// ── PRODUCT CARD (tab content) ───────────────────────────────────────────────
+// ── FALLBACK IMAGE ─────────────────────────────────────────────────────────────
+// Komponen gambar dengan fallback placeholder SVG agar tidak blank saat gagal load
+function ImgWithFallback({
+    src,
+    alt,
+    className,
+    style,
+    fallbackText = "Foto",
+}: {
+    src: string;
+    alt: string;
+    className?: string;
+    style?: React.CSSProperties;
+    fallbackText?: string;
+}) {
+    const [failed, setFailed] = useState(false);
 
+    if (failed) {
+        return (
+            <div
+                className={className}
+                style={{
+                    ...style,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "#f3f4f6",
+                    color: "#9ca3af",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                }}
+            >
+                [ {fallbackText} ]
+            </div>
+        );
+    }
+
+    return (
+        <img
+            src={src}
+            alt={alt}
+            className={className}
+            style={style}
+            onError={() => setFailed(true)}
+        />
+    );
+}
+
+// ── PRODUCT CARD ──────────────────────────────────────────────────────────────
 function ProductCard({ product }: { product: typeof products[0] }) {
     const Icon = product.icon;
-    return (
-        <div className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100">
-            {/* Left — info */}
-            {/* Mengambil 3 dari 5 kolom pada layar medium ke atas (60% width) */}
-            <div className="md:col-span-3 flex flex-col justify-between p-8 sm:p-10 bg-white">
-                {/* Badge */}
-                <div>
-                    <span
-                        className="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5"
-                        style={{ background: product.accent + "20", color: product.accent }}
-                    >
-                        {product.badge}
-                    </span>
+    const [slide, setSlide] = useState(0);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const hasMultiple = product.photos.length > 1;
 
+    // Reset slide ke 0 setiap ganti produk
+    useEffect(() => { setSlide(0); }, [product.id]);
+
+    // Auto-slide setiap 5 detik
+    useEffect(() => {
+        if (!hasMultiple) return;
+        timerRef.current = setInterval(() => {
+            setSlide((s) => (s + 1) % product.photos.length);
+        }, 3000);
+        return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    }, [product.id, product.photos.length, hasMultiple]);
+
+    const goTo = (i: number) => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        setSlide(i);
+        if (hasMultiple) {
+            timerRef.current = setInterval(() => {
+                setSlide((s) => (s + 1) % product.photos.length);
+            }, 3000);
+        }
+    };
+    const prev = () => goTo((slide - 1 + product.photos.length) % product.photos.length);
+    const next = () => goTo((slide + 1) % product.photos.length);
+
+    return (
+        <div className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100 items-stretch h-full">
+            {/* Left — info */}
+            <div className="md:col-span-3 flex flex-col justify-between p-8 sm:p-10 bg-white">
+                <div>
                     <div className="flex items-start gap-4 mb-4">
                         <div
                             className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
@@ -136,7 +207,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
 
                     <p className="text-gray-600 text-sm leading-relaxed mb-6">{product.desc}</p>
 
-                    {/* Keunggulan */}
                     <div className="space-y-2 mb-6">
                         <p className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">Keunggulan</p>
                         {product.keunggulan.map((k, i) => (
@@ -155,93 +225,132 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                     </div>
                 </div>
 
-                {/* CTA note */}
                 <p className="text-sm text-gray-500 italic border-l-4 pl-4 mt-2" style={{ borderColor: product.accent }}>
                     {product.cta}
                 </p>
             </div>
 
-            {/* Right — photo */}
-            {/* Mengambil 2 dari 5 kolom pada layar medium ke atas (40% width) */}
-            <div className="md:col-span-2 relative bg-gray-50 min-h-[260px] md:min-h-0 flex items-center justify-center p-8">
-                {/* Gradient overlay bottom (tetap dipertahankan sebagai background) */}
+            {/* Right — photo slider, memenuhi kolom tanpa padding */}
+            <div className="md:col-span-2 relative overflow-hidden aspect-square md:aspect-auto">
+                {/* Foto slider — cover penuh, tanpa padding */}
                 <div
-                    className="absolute inset-0 opacity-40 z-0"
-                    style={{ background: `linear-gradient(to top, ${product.accent}60, transparent)` }}
-                />
+                    style={{
+                        display: "flex",
+                        width: `${product.photos.length * 100}%`,
+                        height: "100%",
+                        transform: `translateX(-${slide * (100 / product.photos.length)}%)`,
+                        transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                        position: "absolute",
+                        inset: 0,
+                    }}
+                >
+                    {product.photos.map((src, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                width: `${100 / product.photos.length}%`,
+                                height: "100%",
+                                flexShrink: 0,
+                                background: "#f3f4f6",
+                            }}
+                        >
+                            <ImgWithFallback
+                                src={src}
+                                alt={`${product.name} ${i + 1}`}
+                                fallbackText={product.name}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    ))}
+                </div>
 
-                <img
-                    src={product.photo}
-                    alt={product.name}
-                    className="relative z-10 w-full h-full object-contain max-h-[400px] drop-shadow-2xl transition-transform hover:scale-105 duration-300"
-                    onError={(e) => {
-                        // Tambahkan "as HTMLImageElement" di baris ini
-                        const el = e.target as HTMLImageElement; 
-                        
-                        el.style.display = "none";
-                        if (el.parentElement) {
-                            el.parentElement.style.display = "flex";
-                            el.parentElement.style.alignItems = "center";
-                            el.parentElement.style.justifyContent = "center";
-                        }
+                {/* Gradient overlay di atas foto */}
+                <div
+                    className="absolute inset-0 z-10 pointer-events-none"
+                    style={{
+                        background: `linear-gradient(to top, ${product.accent}30 0%, transparent 30%)`,
                     }}
                 />
+
+                {/* Prev / Next buttons */}
+                {hasMultiple && (
+                    <>
+                        <button
+                            onClick={prev}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                            style={{
+                                background: "rgba(0,0,0,0.35)",
+                                border: "1px solid rgba(255,255,255,0.3)",
+                            }}
+                        >
+                            <ChevronLeft className="w-4 h-4 text-white" />
+                        </button>
+                        <button
+                            onClick={next}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                            style={{
+                                background: "rgba(0,0,0,0.35)",
+                                border: "1px solid rgba(255,255,255,0.3)",
+                            }}
+                        >
+                            <ChevronRight className="w-4 h-4 text-white" />
+                        </button>
+
+                        {/* Dots */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+                            {product.photos.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => goTo(i)}
+                                    className="rounded-full transition-all duration-300"
+                                    style={{
+                                        width: slide === i ? "18px" : "6px",
+                                        height: "6px",
+                                        background: slide === i ? "#fff" : "rgba(255,255,255,0.45)",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        padding: 0,
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
 }
 
 // ── MAIN PAGE ─────────────────────────────────────────────────────────────────
-
 export default function Product() {
     const [activeTab, setActiveTab] = useState(products[0].id);
-
     const activeProduct = products.find((p) => p.id === activeTab)!;
 
     return (
         <div className="bg-white text-gray-900">
 
-            {/* ── HERO ── */}
-            <section className="relative bg-gray-950 text-white overflow-hidden py-24 sm:py-32">
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#FFD700]/8 rounded-full blur-3xl" />
-                    <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FFD700]/5 rounded-full blur-2xl" />
-                    {/* subtle grid */}
-                    <div
-                        className="absolute inset-0 opacity-5"
-                        style={{
-                            backgroundImage:
-                                "linear-gradient(rgba(255,215,0,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.3) 1px, transparent 1px)",
-                            backgroundSize: "60px 60px",
-                        }}
-                    />
-                </div>
-
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FFD700] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-6">
-                        Produk & Layanan
-                    </span>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight max-w-3xl">
-                        Solusi Energi Surya{" "}
-                        <span className="text-[#FFD700]">Terbaik</span>{" "}
-                        untuk Anda
-                    </h1>
-                    <p className="mt-5 text-gray-400 text-lg sm:text-xl max-w-2xl leading-relaxed">
+            {/* ── HERO — sama seperti Project.tsx ── */}
+            <section className="relative bg-white text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: "url('/images/product-bg.png')" }}
+                />
+                <div className="absolute inset-0 bg-gray-900/50" />
+                <div className="relative z-10 max-w-4xl mx-auto px-4">
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Produk & Layanan</h1>
+                    <p className="mt-3 text-white/75 text-sm sm:text-base max-w-4xl mx-auto leading-relaxed">
                         Kami menyediakan produk dan layanan energi surya terbaik sesuai dengan kebutuhan listrik Anda
                     </p>
-
                     {/* Sub-taglines */}
-                    <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4 max-w-xs">
-                            <Zap className="w-5 h-5 text-[#FFD700] flex-shrink-0 mt-0.5" />
-                            <p className="text-gray-300 text-sm leading-relaxed">
-                                Panel surya bukan lagi sekadar pilihan, melainkan <strong className="text-white">investasi cerdas</strong> yang dapat membantu menghemat listrik dan meningkatkan nilai properti.
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl items-stretch">
+                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                            <p className="text-gray-300 text-left text-xs sm:text-sm leading-relaxed">
+                                Panel surya bukan lagi sekadar pilihan, melainkan investasi cerdas yang dapat membantu menghemat listrik dan meningkatkan nilai properti.
                             </p>
                         </div>
-                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4 max-w-xs">
-                            <Sun className="w-5 h-5 text-[#FFD700] flex-shrink-0 mt-0.5" />
-                            <p className="text-gray-300 text-sm leading-relaxed">
-                                Gepo Energy hadir dengan <strong className="text-white">teknologi unggulan</strong> yang dapat menyesuaikan kebutuhan listrik Anda.
+                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                            <p className="text-gray-300 text-left text-xs sm:text-sm leading-relaxed">
+                                Gepo Energy hadir dengan teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda.
                             </p>
                         </div>
                     </div>
@@ -249,18 +358,8 @@ export default function Product() {
             </section>
 
             {/* ── PRODUCTS ── */}
-            <section className="py-20 sm:py-28 bg-gray-50">
+            <section className="py-14 sm:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FFD700] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
-                            Produk Unggulan
-                        </span>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Teknologi Panel Surya Kami</h2>
-                        <p className="mt-3 text-gray-500 max-w-xl mx-auto">
-                            Pilih teknologi yang paling sesuai dengan kebutuhan, anggaran, dan estetika Anda
-                        </p>
-                    </div>
-
                     {/* Tab selector */}
                     <div className="flex flex-wrap justify-center gap-3 mb-10">
                         {products.map((p) => {
@@ -273,7 +372,7 @@ export default function Product() {
                                     className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border transition-all duration-300 ${
                                         isActive
                                             ? "bg-gray-900 text-white border-gray-900 shadow-lg"
-                                            : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
+                                            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-100"
                                     }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -283,14 +382,13 @@ export default function Product() {
                         })}
                     </div>
 
-                    {/* Active product card */}
                     <div key={activeProduct.id}>
                         <ProductCard product={activeProduct} />
                     </div>
                 </div>
             </section>
 
-            {/* ── CTA — Mana Solusi yang Tepat ── */}
+            {/* ── CTA ── */}
             <section className="py-20 bg-[#FFD700]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
@@ -307,8 +405,7 @@ export default function Product() {
                                 to="/contact"
                                 className="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 no-underline text-sm"
                             >
-                                Konsultasi Gratis
-                                <ChevronRight className="w-4 h-4" />
+                                Konsultasi Gratis <ChevronRight className="w-4 h-4" />
                             </Link>
                             <Link
                                 to="/project"
@@ -323,7 +420,7 @@ export default function Product() {
 
             {/* ── SERVICES ── */}
             <section className="py-20 sm:py-28 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FAAD04] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
                             Solusi Lengkap Kami
@@ -336,41 +433,29 @@ export default function Product() {
                         </p>
                     </div>
 
-                    <div className="space-y-16">
+                    <div className="space-y-14">
                         {services.map((service, i) => {
                             const Icon = service.icon;
                             const isReverse = i % 2 !== 0;
                             return (
                                 <div
                                     key={service.num}
-                                    className={`flex flex-col ${isReverse ? "md:flex-row-reverse" : "md:flex-row"} gap-10 sm:gap-16 items-center`}
+                                    className={`flex flex-col ${isReverse ? "md:flex-row-reverse" : "md:flex-row"} gap-10 sm:gap-14 items-center`}
                                 >
-                                    {/* Photo */}
-                                    <div className="w-full md:w-1/2 flex-shrink-0">
-                                        <div className="rounded-3xl overflow-hidden bg-gray-100 aspect-video relative">
-                                            <img
+                                    {/* Photo — dikecilkan: dari w-1/2 → w-2/5 dan aspect-video → aspect-[4/3] */}
+                                    <div className="w-full md:w-2/5 flex-shrink-0">
+                                        <div className="rounded-2xl overflow-hidden bg-gray-100 aspect-[4/3] relative shadow-md">
+                                            <ImgWithFallback
                                                 src={service.photo}
                                                 alt={service.title}
+                                                fallbackText="Foto Layanan"
                                                 className="w-full h-full object-cover"
-                                                onError={(e) => {
-                                                    const el = e.target as HTMLImageElement;
-                                                    el.style.display = "none";
-                                                    if (el.parentElement) {
-                                                        el.parentElement.style.display = "flex";
-                                                        el.parentElement.style.alignItems = "center";
-                                                        el.parentElement.style.justifyContent = "center";
-                                                        el.parentElement.style.color = "#9ca3af";
-                                                        el.parentElement.style.fontSize = "14px";
-                                                        el.parentElement.innerText = "[ Foto Layanan ]";
-                                                    }
-                                                }}
                                             />
                                         </div>
                                     </div>
 
                                     {/* Text */}
                                     <div className="flex-1">
-                                        {/* Step number */}
                                         <div className="flex items-center gap-4 mb-5">
                                             <span className="text-6xl font-extrabold text-gray-100 leading-none select-none">
                                                 {service.num}
@@ -379,7 +464,6 @@ export default function Product() {
                                                 <Icon className="w-5 h-5 text-[#b59a00]" />
                                             </div>
                                         </div>
-
                                         <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-4 leading-snug">
                                             {service.title}
                                         </h3>
@@ -391,6 +475,7 @@ export default function Product() {
                     </div>
                 </div>
             </section>
+
         </div>
     );
 }

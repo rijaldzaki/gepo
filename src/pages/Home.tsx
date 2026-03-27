@@ -351,7 +351,7 @@ export default function Home() {
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: "url('/images/hero-bg.png')" }}
                 />
-                <div className="absolute inset-0 bg-gray-900/20" />
+                <div className="absolute inset-0 bg-gray-900/50" />
 
                 <div className="relative z-10 max-w-4xl mx-auto px-8 flex flex-col items-center">
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-semibold mb-5 text-white leading-snug">

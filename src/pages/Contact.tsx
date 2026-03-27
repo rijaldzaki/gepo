@@ -69,14 +69,14 @@ export default function Contact() {
     return (
         <div className="bg-white text-gray-900">
             {/* ── HERO ── */}
-            <section className="relative text-white overflow-hidden h-[50vh]" style={{ minHeight: "280px" }}>
+            <section className="relative text-white overflow-hidden h-screen sm:h-[50vh]" style={{ minHeight: "280px" }}>
                 {/* Background image */}
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: "url('/images/contact-bg.jpg')" }}
                 />
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gray-900/65" />
+                <div className="absolute inset-0 bg-gray-900/50" />
 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-20 sm:py-28">
@@ -88,17 +88,17 @@ export default function Contact() {
                     </p>
 
                     {/* Contact pills */}
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col items-center sm:flex-row sm:justify-center gap-4 ">
                         <a
                             href="https://wa.me/6285292261294"
-                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium"
+                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium w-fit"
                         >
                             <FaWhatsapp className="w-4 h-4" />
                             +62 852-9226-1294
                         </a>
                         <a
                             href="mailto: info@gepoenergy.co.id"
-                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium"
+                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium w-fit"
                         >
                             <Mail className="w-4 h-4" />
                             info@gepoenergy.co.id

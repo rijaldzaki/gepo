@@ -347,9 +347,9 @@ export default function Project() {
     return (
         <div className="bg-white text-black">
             {/* ── HERO ── */}
-            <section className="relative bg-white text-white text-center overflow-hidden h-[50vh] flex items-center justify-center">
+            <section className="relative bg-white text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/project-bg.png')" }} />
-                <div className="absolute inset-0 bg-gray-900/20" />
+                <div className="absolute inset-0 bg-gray-900/50" />
                 <div className="relative z-10 max-w-3xl mx-auto px-4">
                     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Proyek</h1>
                 </div>
