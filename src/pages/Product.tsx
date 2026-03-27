@@ -372,7 +372,7 @@ export default function Product() {
                                     className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border transition-all duration-300 ${
                                         isActive
                                             ? "bg-gray-900 text-white border-gray-900 shadow-lg"
-                                            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-100"
+                                            : "bg-white text-gray-600 border-gray-200 hover:bg-black"
                                     }`}
                                 >
                                     <Icon className="w-4 h-4" />
