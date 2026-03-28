@@ -217,7 +217,6 @@ function ProjectPopup({ project }: { project: Project }) {
                 )}
             </div>
 
-            {/* Body — sama seperti sebelumnya */}
             <div style={{ padding: "14px 16px", background: "#FFFFFF" }}>
                 <div style={{
                     display: "grid", gridTemplateColumns: "1fr 1fr",

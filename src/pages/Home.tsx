@@ -273,7 +273,7 @@ function ProductSlider() {
 
     return (
         <div>
-            <div className="grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-lg bg-black">
+            <div className="grid md:grid-cols-3 gap-0 rounded-3xl overflow-hidden shadow-lg border border-black bg-black">
                 <div className="flex flex-col justify-between p-8 sm:p-10">
                     <div>
                         <div className="flex items-center gap-3 mb-5">
@@ -284,11 +284,6 @@ function ProductSlider() {
                         </div>
                         <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-snug mb-2">{p.title}</h3>
                         <p className="text-[#FFD700]/80 text-sm font-semibold mb-4">{p.subtitle}</p>
-                        <div className="bg-[#FFD700]/10 border border-[#FFD700]/20 rounded-2xl p-5 mb-6">
-                            <p className="text-sm text-white/80 leading-relaxed">
-                                Temukan bagaimana teknologi surya inovatif kami mengubah lanskap energi terbarukan.
-                            </p>
-                        </div>
                         <p className="text-gray-400 text-sm leading-relaxed">{p.desc}</p>
                     </div>
                 </div>
