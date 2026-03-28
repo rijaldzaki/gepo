@@ -6,8 +6,7 @@ import { FaSolarPanel } from "react-icons/fa6";
 import { LuTrees } from "react-icons/lu";
 import { IconType } from "react-icons";
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
-
+// DATA
 const stats: { value: number; decimal: number; suffix: string; label: string; icon: IconType }[] = [
     { value: 3,     decimal: 0, suffix: "",           label: "proyek",        icon: FaSolarPanel },
     { value: 10,    decimal: 0, suffix: " kWh",       label: "energi hijau",  icon: MdOutlineEnergySavingsLeaf },
@@ -31,7 +30,7 @@ const partners = [
     { name: "Wakaf Energi",         logo: "/images/partners/wakaf_energi.png" },
 ];
 
-// Sertifikasi — NIB punya 3 slides, yang lain 1 slide
+// Sertifikasi
 const sertifikasi = [
     {
         id: "nib",
@@ -113,18 +112,16 @@ const leaders = [
     },
 ];
 
-// ── MARQUEE ───────────────────────────────────────────────────────────────────
-// Teknik: fixed width per slot + pixel translation
-// Tidak bergantung pada ukuran gambar → tidak ada layout shift → benar-benar infinity
-const ITEM_W   = 148; // px — lebar slot tiap logo  (ubah jika perlu)
-const ITEM_GAP = 54;  // px — jarak antar slot       (ubah jika perlu)
-const SET_PX   = partners.length * (ITEM_W + ITEM_GAP); // lebar tepat satu set
+// MARQUEE
+const ITEM_W   = 148;
+const ITEM_GAP = 54;
+const SET_PX   = partners.length * (ITEM_W + ITEM_GAP);
 
 function PartnerSlot({ p }: { p: typeof partners[0] }) {
     const [err, setErr] = useState(false);
     return (
         <div
-            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-300"
+            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
             style={{ width: `${ITEM_W}px`, height: "96px", marginRight: `${ITEM_GAP}px` }}
         >
             {!err ? (
@@ -182,7 +179,7 @@ function Marquee() {
     );
 }
 
-// ── STAT ──────────────────────────────────────────────────────────────────────
+// STAT
 function useCountUp(target: number, duration = 1800, decimal = 0, started = false) {
     const [count, setCount] = useState(0);
     useEffect(() => {
@@ -249,7 +246,7 @@ function StatsRow() {
     );
 }
 
-// ── CERT CARD — portrait A4 + auto-slide + dot overlay ───────────────────────
+// CERT
 function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
     const [slide, setSlide] = useState(0);
     const hasMultiple = cert.slides.length > 1;
@@ -264,7 +261,6 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
         return () => { if (timerRef.current) clearInterval(timerRef.current); };
     }, [cert.slides.length, hasMultiple]);
 
-    // Klik manual → reset timer agar tidak langsung loncat setelah diklik
     const goTo = (i: number) => {
         if (timerRef.current) clearInterval(timerRef.current);
         setSlide(i);
@@ -280,8 +276,6 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
 
     return (
         <div className="flex flex-col rounded-2xl overflow-hidden bg-white shadow-lg h-full hover:scale-103 transition-all duration-300">
-
-            {/* Foto area — rasio A4 (1 : √2 ≈ 1 : 1.414) */}
             <div className="relative w-full bg-white overflow-hidden" style={{ aspectRatio: "1 / 1.414" }}>
                 <div
                     className="absolute inset-0 flex"
@@ -305,8 +299,6 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
                         </div>
                     ))}
                 </div>
-
-                {/* Prev / Next buttons */}
                 {hasMultiple && (
                     <>
                         <button onClick={prev}
@@ -318,7 +310,6 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
                             <ChevronRight className="w-4 h-4 text-gray-700" />
                         </button>
 
-                        {/* Dot indicators — overlay di dalam area foto, paling bawah */}
                         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                             {cert.slides.map((_, i) => (
                                 <button
@@ -337,8 +328,6 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
                     </>
                 )}
             </div>
-
-            {/* Info area — tidak ada dot di sini, gambar tidak tercrop */}
             <div className="p-5 border-t border-gray-100">
                 <h3 className="font-extrabold text-black text-base mb-0.5">{cert.title}</h3>
                 <p className="text-xs font-bold text-[#b59a00] uppercase tracking-wider mb-2">{cert.subtitle}</p>
@@ -348,12 +337,12 @@ function CertCard({ cert }: { cert: typeof sertifikasi[0] }) {
     );
 }
 
-// ── COMPONENT ─────────────────────────────────────────────────────────────────
+// COMPONENT
 export default function About() {
     return (
         <div className="bg-white text-gray-900">
 
-            {/* ── HERO ── */}
+            {/*HERO*/}
             <section className="relative bg-gray-900 text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/about-bg.png')" }} />
                 <div className="absolute inset-0 bg-gray-900/50" />
@@ -362,14 +351,14 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ── STATS ── */}
+            {/*STATS*/}
             <section className="border-b-2 border-gray-100">
                 <div className="max-w-5xl mx-auto px-8 sm:px-6 lg:px-16 py-14 sm:py-16">
                     <StatsRow />
                 </div>
             </section>
 
-            {/* ── OVERVIEW ── */}
+            {/*OVERVIEW*/}
             <section className="py-14 sm:py-16">
                 <div className="max-w-6xl mx-auto px-8">
                     <div className="mb-8">
@@ -384,7 +373,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ── PARTNER ── */}
+            {/*PARTNER*/}
             <section className="py-14 sm:py-16 px-8">
                 <p className="text-center text-2xl sm:text-3xl font-bold text-black mb-16 tracking-tight">
                     Partner & <span className="text-[#FFD700] font-bold">Kolaborasi</span>
@@ -392,7 +381,7 @@ export default function About() {
                 <Marquee />
             </section>
 
-            {/* ── VISI & MISI ── */}
+            {/*VISI & MISI*/}
             <section className="py-14 sm:py-16 bg-white px-4 sm:px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="bg-gray-50/50 rounded-3xl p-10 md:p-16 shadow-lg border border-gray-100">
@@ -431,11 +420,10 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ── SERTIFIKASI & LEGALITAS ── */}
+            {/*SERTIFIKASI & LEGALITAS*/}
             <section className="py-14 sm:py-16 bg-gray-50">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-10">Sertifikat & Legalitas</h2>
-                    {/* Grid 3 kolom — kartu portrait A4 */}
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-10">Sertifikat & <span className="text-[#FFD700]">Legalitas</span></h2>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-stretch">
                         {sertifikasi.map((cert) => (
                             <CertCard key={cert.id} cert={cert} />
@@ -444,7 +432,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ── COMPANY PROFILE CTA ── */}
+            {/*COMPANY PROFILE CTA*/}
             <section className="py-14 sm:py-16 bg-black">
                 <div className="max-w-3xl mx-auto px-4 text-center">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 tracking-tight">
@@ -461,7 +449,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* ── BOARD OF ADVISORY ── */}
+            {/*BOARD OF ADVISORY*/}
             {advisors.map((advisor, i) => (
                 <section key={i} className="py-14 sm:py-16 bg-white">
                     <div className="max-w-5xl  mx-auto px-8 sm:px-6">
@@ -489,10 +477,8 @@ export default function About() {
                     <div className="flex flex-wrap justify-center gap-8">
                         {leaders.map((leader, i) => (
                             <div key={i}
-                                // PERBAIKAN: bg-black DIHAPUS dari sini agar sudut atas transparan (mengikuti bg-gray-50)
                                 className="flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#FFD700] hover:scale-101 transition-all duration-500 w-full sm:w-[320px] lg:w-[300px]"
                             >
-                                {/* ── FOTO ── */}
                                 <div
                                     className="w-full overflow-hidden"
                                     style={{ aspectRatio: "3 / 4" }}
@@ -508,7 +494,7 @@ export default function About() {
                                                 el.parentElement.style.display = "flex";
                                                 el.parentElement.style.alignItems = "center";
                                                 el.parentElement.style.justifyContent = "center";
-                                                el.parentElement.style.backgroundColor = "#000"; // Fallback hitam jika foto error
+                                                el.parentElement.style.backgroundColor = "#000"; // Fallback jika foto error
                                                 el.parentElement.style.color = "#fff";
                                                 el.parentElement.style.fontSize = "13px";
                                                 el.parentElement.innerText = "[ Foto ]";
@@ -516,9 +502,6 @@ export default function About() {
                                         }}
                                     />
                                 </div>
-
-                                {/* ── TEKS ── */}
-                                {/* PERBAIKAN: bg-black dipindahkan ke sini. flex-1 memastikan warna hitam mengisi sisa kartu ke bawah */}
                                 <div className="p-5 bg-black flex-1"> 
                                     <div className="border-l-4 border-[#FFD700] pl-3 mb-3">
                                         <h3 className="font-bold text-white text-base leading-snug">{leader.name}</h3>

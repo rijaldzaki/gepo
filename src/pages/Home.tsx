@@ -190,7 +190,7 @@ function PartnerSlot({ p }: { p: typeof partners[0] }) {
     const [err, setErr] = useState(false);
     return (
         <div
-            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-300"
+            className="flex-shrink-0 flex items-center justify-center opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
             style={{ width: `${ITEM_W}px`, height: "96px", marginRight: `${ITEM_GAP}px` }}
         >
             {!err ? (
@@ -344,8 +344,7 @@ function ProductSlider() {
 export default function Home() {
     return (
         <div className="bg-white text-gray-900">
-
-            {/* ── HERO ── */}
+            {/*HERO*/}
             <section className="relative min-h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
@@ -368,12 +367,12 @@ export default function Home() {
                         Jelajahi Solusi Kami
                     </Link>
 
-                    {/* ── STATS CARDS ── */}
+                    {/*STATS CARDS*/}
                     <StatsRow />
                 </div>
             </section>
 
-            {/* ── PARTNER ── */}
+            {/*PARTNER*/}
             <section className="py-14 sm:py-16 px-8">
                 <p className="text-center text-2xl sm:text-3xl font-bold text-black mb-16 tracking-tight">
                     Partner & <span className="text-[#FFD700] font-bold">Kolaborasi</span>
@@ -381,34 +380,29 @@ export default function Home() {
                 <Marquee />
             </section>
 
-            {/* ── TENTANG GEPO ENERGY ── */}
-            <section className="py-12 sm:py-20">
+            {/*TENTANG GEPO ENERGY*/}
+            <section className="py-14 sm:py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 sm:gap-20 items-center">
                         <div>
-                            <span className="inline-flex items-center gap-2 bg-[#1a2744] text-white text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
-                                <span>⚡</span> Tentang Gepo Energy
-                            </span>
-                            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-5">
-                                Gepo Energy menghadirkan solusi energi terbarukan dengan panel surya inovatif, sekaligus{" "}
-                                <span className="text-[#1a2744]">menghemat biaya listrik anda.</span>
+                            <h2 className="text-2xl sm:text-4xl font-extrabold italic text-black leading-tight mb-5">
+                                Powering Your Life{" "}
                             </h2>
                             <p className="text-gray-500 text-base leading-relaxed mb-8">
-                                Gepo Energy adalah perusahaan EPC dan O&M energi surya di Indonesia yang didirikan tahun 2023. Kami merancang dan menghadirkan sistem energi surya yang andal, efisien, serta berorientasi kinerja jangka panjang — membantu klien menurunkan biaya energi dan mencapai tujuan keberlanjutan ESG.
-                            </p>
+                                Gepo Energy adalah perusahaan EPC dan O&M energi surya di Indonesia yang didirikan tahun 2023. Kami merancang dan menghadirkan sistem energi surya yang andal, efisien, serta berorientasi kinerja jangka panjang. </p>
                             <Link
                                 to="/about"
-                                className="inline-flex items-center gap-2 bg-[#1a2744] hover:bg-[#1a2744]/80 text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 no-underline text-sm"
+                                className="inline-flex items-center gap-2 bg-black hover:bg-[#FFD700] text-white hover:text-black font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 no-underline text-sm"
                             >
                                 Selengkapnya <ChevronRight className="w-4 h-4" />
                             </Link>
                         </div>
                         <div className="relative">
-                            <div className="rounded-3xl overflow-hidden bg-gray-100 aspect-[4/3] shadow-xl">
+                            <div className="rounded-3xl overflow-hidden aspect-[1/1]">
                                 <img
-                                    src="/images/about-illustration.jpg"
+                                    src="/images/home1.png"
                                     alt="Tentang Gepo Energy"
-                                    className="w-full h-full object-cover"
+                                    className="max-w-full max-h-full object-cover"
                                     onError={(e) => {
                                         const el = e.target as HTMLImageElement;
                                         el.style.display = "none";
@@ -421,39 +415,30 @@ export default function Home() {
                                     }}
                                 />
                             </div>
-                            <div className="absolute -top-4 -right-4 bg-[#FFD700] text-gray-900 text-xs font-extrabold px-4 py-2 rounded-full shadow-lg">
-                                Energi Surya ☀️
-                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ── PRODUK ── */}
+            {/*PRODUK*/}
             <section className="py-20 sm:py-28 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12">
                         <div>
-                            <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FFD700] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
-                                Produk Kami
-                            </span>
-                            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Our Solutions</h2>
-                            <p className="mt-2 text-gray-500 text-base max-w-md">
-                                Teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda
-                            </p>
+                            <h2 className="text-2xl sm:text-3xl max-w-2xl font-extrabold text-gray-900">Teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda</h2>
                         </div>
                         <Link
                             to="/product"
                             className="inline-flex items-center gap-2 border-2 border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-300 no-underline flex-shrink-0"
                         >
-                            Semua Produk <ChevronRight className="w-4 h-4" />
+                            Selengkapnya <ChevronRight className="w-4 h-4" />
                         </Link>
                     </div>
                     <ProductSlider />
                 </div>
             </section>
 
-            {/* ── SERTIFIKASI & LEGALITAS ── */}
+            {/*SERTIFIKASI & LEGALITAS*/}
             <section className="py-20 sm:py-28 bg-white">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
@@ -485,18 +470,10 @@ export default function Home() {
                             </div>
                         ))}
                     </div>
-                    <div className="mt-8">
-                        <Link
-                            to="/about"
-                            className="inline-flex items-center gap-2 bg-[#FFD700] hover:bg-[#FFD700]/80 text-gray-900 font-bold px-7 py-3 rounded-full transition-all duration-300 hover:scale-105 no-underline text-sm"
-                        >
-                            Tentang Gepo Energy
-                        </Link>
-                    </div>
                 </div>
             </section>
 
-            {/* ── CTA BANNER ── */}
+            {/*CTA BANNER*/}
             <section className="relative py-28 sm:py-36 text-white text-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"

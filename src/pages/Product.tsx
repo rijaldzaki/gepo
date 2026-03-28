@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Diamond, Layers2, Grid3X3, Cpu, ClipboardList, Wrench, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
-
+// DATA
 const products = [
     {
         id: "monofacial",
@@ -86,27 +85,38 @@ const services = [
         num: "01",
         icon: ClipboardList,
         title: "Studi Kelayakan dan Desain Teknis",
-        desc: "Pada tahap awal, Gepo Energy akan melakukan studi kelayakan melalui survey langsung ke lokasi maupun berdasarkan kondisi kelistrikan klien. Setelah itu, kami membuat desain sistem PLTS berdasarkan hasil studi tersebut — mencakup informasi sistem komponen PLTS, sambungan kelistrikan, serta tata letak yang disesuaikan dengan kebutuhan dan aspek keselamatan. Kami juga melakukan pengajuan perizinan PLTS sesuai aturan yang berlaku, dan mengolah data menjadi proposal berisi estimasi produksi listrik, penghematan tagihan, serta dokumen teknis pendukung.",
-        photo: "/images/services/survey.jpg",
+        desc: "Pada tahap awal, Gepo Energy akan melakukan studi kelayakan, baik itu melalui survey langsung ke lokasi maupun berdasarkan kondisi kelistrikan klien. Setelah itu, kami akan mambuat desain sistem PLTS berdasarkan hasil studi tersebut dengan informasi sistem komponen PLTS, sambungan kelistrikan, serta tata letak yang disesuaikan dengan kebutuhan dan keinginan klien berdasrkan aspek keselamatan dan keamanan. Pararel dengan hal-hal tersebut, kami juga melakukan proses pengajuan perizinan PLTS sesuai dengan aturan ada yang dibuka pada rentang bulan Januari dan Juli. Hasil data-data tersebut akan kami olah menjadi proposal berisi estimasi produksi listrik PLTS, penghematan tagihan listrik, serta dokumen-dokumen teknis pendukung sesuai dengan kebutuhan klien.",
+        photos: [
+            "/images/products/study1.png",
+            "/images/products/study2.png",
+            "/images/products/study3.png",
+            "/images/products/study4.png",
+        ],
     },
     {
         num: "02",
         icon: Wrench,
         title: "Instalasi dan Pengujian Kinerja",
-        desc: "Gepo Energy menangani seluruh proses instalasi PLTS mulai dari pengadaan komponen, konstruksi, hingga perizinan. Kami menyediakan berbagai jenis panel surya dan komponen pendukung yang dapat menyesuaikan kebutuhan klien secara tepat. Instalasi disesuaikan dengan sistem on-grid, off-grid, maupun hybrid. Setelah sistem terpasang, kami melakukan pengujian kinerja berdasarkan standar yang telah ditetapkan untuk memastikan sistem PLTS bekerja aman dan optimal.",
-        photo: "/images/services/instalasi.jpg",
+        desc: "Gepo Energy menangani seluruh proses instalasi PLTS mulai dari pengadaan komponen, konstruksi, hingga perizinan. Kami menyediakan berbagai jenis produk panel surya dan komponen pendukungnya yang dapat menyesuaikan kebutuhan listrik klien secara tepat dan akurat. Instalasi disesuaikan dengan sistem pemasangan baik itu on-grid, off-grid, maupun hybrid sesuai dengan kebutuhan klien. Setelah sistem terpasang, kami akan melakukan pengujian kinerja berdasarkan standar pengujian yang telah disesuaikan untuk memastikan sistem PLTS bekerja secara aman dan optimal. Kami memastikan menyediakan produk dan layanan terbaik.",
+        photos: [
+            "/images/products/installation1.jpeg",
+            "/images/products/installation2.jpeg",
+            "/images/products/installation3.jpeg",
+            "/images/products/installation4.jpeg",
+        ],
     },
     {
         num: "03",
         icon: Activity,
         title: "Operasional dan Pemeliharaan",
-        desc: "Gepo Energy menyediakan sistem IoT yang dapat diintegrasikan sesuai kebutuhan klien untuk pemantauan performa dan pemeliharaan sistem PLTS. Klien dapat memantau secara daring dan real-time 24/7 untuk memastikan produksi listrik PLTS berjalan secara maksimal.",
-        photo: "/images/services/monitoring.jpg",
+        desc: "Gepo Energy menyediakan sistem IoT yang dapat diintegasikan sesuai dengan kebutuhan klien guna melakukan pemantauan performa sistem PLTS dan pemeliharaan sistem. Klien dapat memantau secara daring dan real-time 24/7 untuk memastikan produksi listrik PLTS secara maksimal.",
+        photos: [
+            "/images/products/operational1.png",
+        ],
     },
 ];
 
-// ── FALLBACK IMAGE ─────────────────────────────────────────────────────────────
-// Komponen gambar dengan fallback placeholder SVG agar tidak blank saat gagal load
+// FALLBACK IMAGE
 function ImgWithFallback({
     src,
     alt,
@@ -153,7 +163,105 @@ function ImgWithFallback({
     );
 }
 
-// ── PRODUCT CARD ──────────────────────────────────────────────────────────────
+function ServicePhotoSlider({ service }: { service: typeof services[0] }) {
+    const [slide, setSlide] = useState(0);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const hasMultiple = service.photos.length > 1;
+
+    useEffect(() => {
+        if (!hasMultiple) return;
+        timerRef.current = setInterval(() => {
+            setSlide((s) => (s + 1) % service.photos.length);
+        }, 5000);
+        return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    }, [service.num, service.photos.length, hasMultiple]);
+
+    const goTo = (i: number) => {
+        if (timerRef.current) clearInterval(timerRef.current);
+        setSlide(i);
+        if (hasMultiple) {
+            timerRef.current = setInterval(() => {
+                setSlide((s) => (s + 1) % service.photos.length);
+            }, 5000);
+        }
+    };
+    const prev = () => goTo((slide - 1 + service.photos.length) % service.photos.length);
+    const next = () => goTo((slide + 1) % service.photos.length);
+
+    return (
+        <div className="rounded-2xl overflow-hidden bg-gray-100 aspect-[4/3] relative shadow-md">
+            <div
+                style={{
+                    display: "flex",
+                    width: `${service.photos.length * 100}%`,
+                    height: "100%",
+                    transform: `translateX(-${slide * (100 / service.photos.length)}%)`,
+                    transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                    position: "absolute",
+                    inset: 0,
+                }}
+            >
+                {service.photos.map((src, i) => (
+                    <div
+                        key={i}
+                        style={{
+                            width: `${100 / service.photos.length}%`,
+                            height: "100%",
+                            flexShrink: 0,
+                        }}
+                    >
+                        <ImgWithFallback
+                            src={src}
+                            alt={`${service.title} foto ${i + 1}`}
+                            fallbackText="Foto Layanan"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                ))}
+            </div>
+
+            {hasMultiple && (
+                <>
+                    <button
+                        onClick={prev}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                        style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.3)" }}
+                    >
+                        <ChevronLeft className="w-4 h-4 text-white" />
+                    </button>
+                    <button
+                        onClick={next}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                        style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.3)" }}
+                    >
+                        <ChevronRight className="w-4 h-4 text-white" />
+                    </button>
+
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                        {service.photos.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => goTo(i)}
+                                style={{
+                                    width: slide === i ? "18px" : "6px",
+                                    height: "6px",
+                                    borderRadius: "9999px",
+                                    background: slide === i ? "#FFD700" : "rgba(255,255,255,0.5)",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                    transition: "all 0.3s",
+                                }}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
+// PRODUCT CARD
 function ProductCard({ product }: { product: typeof products[0] }) {
     const Icon = product.icon;
     const [slide, setSlide] = useState(0);
@@ -185,7 +293,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
     const next = () => goTo((slide + 1) % product.photos.length);
 
     return (
-        <div className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100 items-stretch h-full">
+        <div className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden shadow-xl border border-gray-100 items-stretch" style={{ minHeight: "420px" }}>
             {/* Left — info */}
             <div className="md:col-span-3 flex flex-col justify-between p-8 sm:p-10 bg-white">
                 <div>
@@ -204,9 +312,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                             <p className="text-sm text-gray-500 mt-0.5">{product.subtitle}</p>
                         </div>
                     </div>
-
                     <p className="text-gray-600 text-sm leading-relaxed mb-6">{product.desc}</p>
-
                     <div className="space-y-2 mb-6">
                         <p className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">Keunggulan</p>
                         {product.keunggulan.map((k, i) => (
@@ -230,9 +336,8 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                 </p>
             </div>
 
-            {/* Right — photo slider, memenuhi kolom tanpa padding */}
-            <div className="md:col-span-2 relative overflow-hidden aspect-square md:aspect-auto">
-                {/* Foto slider — cover penuh, tanpa padding */}
+            {/*Right — photo slider*/}
+            <div className="md:col-span-2 relative overflow-hidden aspect-square md:aspect-auto md:min-h-full">
                 <div
                     style={{
                         display: "flex",
@@ -264,7 +369,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                     ))}
                 </div>
 
-                {/* Gradient overlay di atas foto */}
                 <div
                     className="absolute inset-0 z-10 pointer-events-none"
                     style={{
@@ -272,7 +376,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
                     }}
                 />
 
-                {/* Prev / Next buttons */}
                 {hasMultiple && (
                     <>
                         <button
@@ -321,15 +424,13 @@ function ProductCard({ product }: { product: typeof products[0] }) {
     );
 }
 
-// ── MAIN PAGE ─────────────────────────────────────────────────────────────────
+// MAIN PAGE
 export default function Product() {
     const [activeTab, setActiveTab] = useState(products[0].id);
-    const activeProduct = products.find((p) => p.id === activeTab)!;
 
     return (
         <div className="bg-white text-gray-900">
-
-            {/* ── HERO — sama seperti Project.tsx ── */}
+            {/*HERO*/}
             <section className="relative bg-white text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
@@ -341,26 +442,19 @@ export default function Product() {
                     <p className="mt-3 text-white/75 text-sm sm:text-base max-w-4xl mx-auto leading-relaxed">
                         Kami menyediakan produk dan layanan energi surya terbaik sesuai dengan kebutuhan listrik Anda
                     </p>
-                    {/* Sub-taglines */}
-                    <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl items-stretch">
-                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4">
-                            <p className="text-gray-300 text-left text-xs sm:text-sm leading-relaxed">
-                                Panel surya bukan lagi sekadar pilihan, melainkan investasi cerdas yang dapat membantu menghemat listrik dan meningkatkan nilai properti.
-                            </p>
-                        </div>
-                        <div className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4">
-                            <p className="text-gray-300 text-left text-xs sm:text-sm leading-relaxed">
-                                Gepo Energy hadir dengan teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda.
-                            </p>
-                        </div>
+                    <div className="mt-5 flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-4">
+                        <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                            Panel surya bukan lagi sekadar pilihan, melainkan investasi cerdas yang dapat membantu menghemat listrik dan meningkatkan nilai properti. 
+                            Gepo Energy hadir dengan teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            {/* ── PRODUCTS ── */}
+            {/*PRODUCTS*/}
             <section className="py-14 sm:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Tab selector */}
+                    {/*Tab selector */}
                     <div className="flex flex-wrap justify-center gap-3 mb-10">
                         {products.map((p) => {
                             const Icon = p.icon;
@@ -371,8 +465,8 @@ export default function Product() {
                                     onClick={() => setActiveTab(p.id)}
                                     className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border transition-all duration-300 ${
                                         isActive
-                                            ? "bg-gray-900 text-white border-gray-900 shadow-lg"
-                                            : "bg-white text-gray-600 border-gray-200 hover:bg-black"
+                                            ? "bg-black text-white border-black shadow-lg"
+                                            : "bg-white text-gray-600 border-black hover:bg-gray-100 hover:text-gray-900"
                                     }`}
                                 >
                                     <Icon className="w-4 h-4" />
@@ -382,18 +476,32 @@ export default function Product() {
                         })}
                     </div>
 
-                    <div key={activeProduct.id}>
-                        <ProductCard product={activeProduct} />
+                    <div style={{ display: "grid" }}>
+                        {products.map((p) => (
+                            <div
+                                key={p.id}
+                                style={{
+                                    gridArea: "1 / 1",
+                                    opacity: activeTab === p.id ? 1 : 0,
+                                    visibility: activeTab === p.id ? "visible" : "hidden",
+                                    transition: "opacity 0.5s ease, transform 0.5s ease",
+                                    transform: activeTab === p.id ? "translateY(0)" : "translateY(8px)",
+                                    pointerEvents: activeTab === p.id ? "auto" : "none",
+                                }}
+                            >
+                                <ProductCard product={p} />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── CTA ── */}
+            {/*CTA*/}
             <section className="py-20 bg-[#FFD700]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
                         <div>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-snug">
+                            <h2 className="text-2xl sm:text-3xl font-extrabold text-black leading-snug">
                                 Mana Solusi yang Tepat untuk Anda?
                             </h2>
                             <p className="mt-2 text-gray-800 max-w-lg">
@@ -409,7 +517,7 @@ export default function Product() {
                             </Link>
                             <Link
                                 to="/project"
-                                className="inline-flex items-center justify-center gap-2 border-2 border-gray-900/30 hover:border-gray-900 text-gray-900 font-bold px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm"
+                                className="inline-flex items-center justify-center gap-2 border-2 border-black text-black hover:bg-black hover:text-white font-bold px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm"
                             >
                                 Lihat Portofolio
                             </Link>
@@ -418,15 +526,12 @@ export default function Product() {
                 </div>
             </section>
 
-            {/* ── SERVICES ── */}
-            <section className="py-20 sm:py-28 bg-white">
+            {/*SERVICES*/}
+            <section className="py-14 sm:py-16 bg-white">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-[#FAAD04] bg-[#FFD700]/10 px-3 py-1 rounded-full mb-4">
-                            Solusi Lengkap Kami
-                        </span>
                         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-                            Dari Studi hingga Operasional
+                            Solusi Lengkap Kami
                         </h2>
                         <p className="mt-3 text-gray-500 max-w-xl mx-auto">
                             Gepo Energy hadir di setiap tahap — mulai dari perencanaan, instalasi, hingga pemeliharaan jangka panjang
@@ -442,29 +547,19 @@ export default function Product() {
                                     key={service.num}
                                     className={`flex flex-col ${isReverse ? "md:flex-row-reverse" : "md:flex-row"} gap-10 sm:gap-14 items-center`}
                                 >
-                                    {/* Photo — dikecilkan: dari w-1/2 → w-2/5 dan aspect-video → aspect-[4/3] */}
                                     <div className="w-full md:w-2/5 flex-shrink-0">
-                                        <div className="rounded-2xl overflow-hidden bg-gray-100 aspect-[4/3] relative shadow-md">
-                                            <ImgWithFallback
-                                                src={service.photo}
-                                                alt={service.title}
-                                                fallbackText="Foto Layanan"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                        <ServicePhotoSlider service={service} />
                                     </div>
-
-                                    {/* Text */}
                                     <div className="flex-1">
                                         <div className="flex items-center gap-4 mb-5">
-                                            <span className="text-6xl font-extrabold text-gray-100 leading-none select-none">
+                                            <span className="text-6xl font-extrabold text-gray-300 leading-none select-none">
                                                 {service.num}
                                             </span>
-                                            <div className="w-10 h-10 rounded-xl bg-[#FFD700]/15 flex items-center justify-center">
-                                                <Icon className="w-5 h-5 text-[#b59a00]" />
+                                            <div className="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center">
+                                                <Icon className="w-5 h-5 text-[#FFD700]" />
                                             </div>
                                         </div>
-                                        <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-4 leading-snug">
+                                        <h3 className="text-xl sm:text-2xl font-extrabold text-black mb-4 leading-snug">
                                             {service.title}
                                         </h3>
                                         <p className="text-gray-600 leading-relaxed">{service.desc}</p>
