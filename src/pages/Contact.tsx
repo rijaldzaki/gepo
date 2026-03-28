@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Mail, User, MapPin } from "lucide-react";
+import { Mail, User } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
 
 // ── TYPES ─────────────────────────────────────────────────────────────────────
@@ -7,8 +7,6 @@ import { FaWhatsapp } from "react-icons/fa6";
 interface FormData {
     nama: string;
     email: string;
-    telepon: string;
-    alamat: string;
     pesan: string;
 }
 
@@ -24,8 +22,6 @@ export default function Contact() {
     const [formData, setFormData] = useState<FormData>({
         nama: "",
         email: "",
-        telepon: "",
-        alamat: "",
         pesan: "",
     });
 
@@ -35,7 +31,7 @@ export default function Contact() {
 
     const validate = (): boolean => {
         const newErrors: FormErrors = {};
-        if (!formData.nama.trim()) newErrors.nama = "Nama lengkap wajib diisi.";
+        if (!formData.nama.trim()) newErrors.nama = "Nama wajib diisi.";
         if (!formData.email.trim()) {
             newErrors.email = "Email wajib diisi.";
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -108,7 +104,7 @@ export default function Contact() {
             </section>
 
             {/* ── FORM SECTION ── */}
-            <section className="bg-white py-16 sm:py-20">
+            <section className="bg-white py-14 sm:py-16">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="flex flex-col items-center gap-3 mb-10">
@@ -137,7 +133,7 @@ export default function Contact() {
                                 <button
                                     onClick={() => {
                                         setSubmitted(false);
-                                        setFormData({ nama: "", email: "", telepon: "", alamat: "", pesan: "" });
+                                        setFormData({ nama: "", email: "", pesan: "" });
                                     }}
                                     className="mt-6 text-blue-600 text-sm underline hover:no-underline"
                                 >
@@ -147,17 +143,17 @@ export default function Contact() {
                         ) : (
                             /* ── FORM ── */
                             <form onSubmit={handleSubmit} noValidate>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {/* Nama Lengkap */}
+                                <div className="grid grid-cols-1 gap-4">
+                                    {/* Nama */}
                                     <div>
-                                        <div className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.nama ? "border-red-400" : "border-gray-200 focus-within:border-blue-500"}`}>
+                                        <div className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.nama ? "border-red-400" : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"}`}>
                                             <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                             <input
                                                 type="text"
                                                 name="nama"
                                                 value={formData.nama}
                                                 onChange={handleChange}
-                                                placeholder="Nama Lengkap *"
+                                                placeholder="Nama*"
                                                 className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent"
                                             />
                                         </div>
@@ -166,7 +162,7 @@ export default function Contact() {
 
                                     {/* Email */}
                                     <div>
-                                        <div className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.email ? "border-red-400" : "border-gray-200 focus-within:border-blue-500"}`}>
+                                        <div className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.email ? "border-red-400" : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"}`}>
                                             <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                             <input
                                                 type="email"
@@ -180,39 +176,9 @@ export default function Contact() {
                                         {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
                                     </div>
 
-                                    {/* Telepon */}
-                                    <div>
-                                        <div className="flex items-center gap-3 border border-gray-200 focus-within:border-blue-500 rounded-lg px-4 py-3 bg-white transition-colors">
-                                            <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                            <input
-                                                type="tel"
-                                                name="telepon"
-                                                value={formData.telepon}
-                                                onChange={handleChange}
-                                                placeholder="Telepon"
-                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Alamat */}
-                                    <div>
-                                        <div className="flex items-center gap-3 border border-gray-200 focus-within:border-blue-500 rounded-lg px-4 py-3 bg-white transition-colors">
-                                            <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                            <input
-                                                type="text"
-                                                name="alamat"
-                                                value={formData.alamat}
-                                                onChange={handleChange}
-                                                placeholder="Alamat"
-                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent"
-                                            />
-                                        </div>
-                                    </div>
-
                                     {/* Pesan — full width */}
-                                    <div className="sm:col-span-2">
-                                        <div className={`flex gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${errors.pesan ? "border-red-400" : "border-gray-200 focus-within:border-blue-500"}`}>
+                                    <div>
+                                        <div className={`flex gap-3 min-h-[240px] border rounded-lg px-4 py-3 bg-white transition-colors ${errors.pesan ? "border-red-400" : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"}`}>
                                             <textarea
                                                 name="pesan"
                                                 value={formData.pesan}
@@ -231,7 +197,7 @@ export default function Contact() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="bg-[#FFD700] hover:bg-black disabled:opacity-60 text-black hover:text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 text-sm"
+                                        className="bg-black hover:bg-[#FFD700] disabled:opacity-60 text-white hover:text-black font-semibold px-8 py-3 rounded-lg transition-all hover:scale-105 duration-500 text-sm"
                                     >
                                         {loading ? "Mengirim..." : "Kirim"}
                                     </button>
