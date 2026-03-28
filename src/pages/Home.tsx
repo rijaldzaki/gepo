@@ -7,7 +7,7 @@ import { FaSolarPanel } from "react-icons/fa6";
 import { LuTrees } from "react-icons/lu";
 import { IconType } from "react-icons";
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// DATA
 
 const stats: { value: number; decimal: number; suffix: string; label: string; icon: IconType }[] = [
     { value: 3,     decimal: 0, suffix: "",           label: "proyek",        icon: FaSolarPanel },
@@ -84,7 +84,7 @@ const certs = [
     },
 ];
 
-// ── COUNTING HOOK ─────────────────────────────────────────────────────────────
+// COUNTING HOOK
 function useCountUp(target: number, duration = 1800, decimal = 0, started = false) {
     const [count, setCount] = useState(0);
 
@@ -105,7 +105,7 @@ function useCountUp(target: number, duration = 1800, decimal = 0, started = fals
     return count;
 }
 
-// ── STAT CARD ─────────────────────────────────────────────────────────────────
+// STAT CARD
 function StatCard({ stat, started }: { stat: typeof stats[0]; started: boolean }) {
     const count = useCountUp(stat.value, 1800, stat.decimal, started);
     const display = stat.decimal > 0 ? count.toFixed(stat.decimal) : Math.floor(count).toString();
@@ -120,7 +120,6 @@ function StatCard({ stat, started }: { stat: typeof stats[0]; started: boolean }
                 border: "1px solid rgba(255, 255, 255, 0.1)",
             }}
         >
-            {/* Icon */}
             <div
                 className="flex-shrink-0 w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center"
                 style={{ background: "rgba(255,215,0,0.18)" }}
@@ -128,7 +127,6 @@ function StatCard({ stat, started }: { stat: typeof stats[0]; started: boolean }
                 <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
             </div>
 
-            {/* Text */}
             <div className="text-left">
                 <div className="flex items-baseline gap-0.5">
                     <span className="text-sm sm:text-xl font-extrabold text-white leading-none">
@@ -146,7 +144,7 @@ function StatCard({ stat, started }: { stat: typeof stats[0]; started: boolean }
     );
 }
 
-// ── STATS ROW (with intersection observer trigger) ────────────────────────────
+// STATS ROW
 function StatsRow() {
     const [started, setStarted] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -248,7 +246,7 @@ function Marquee() {
     );
 }
 
-// ── PRODUCT SLIDER ────────────────────────────────────────────────────────────
+// PRODUCT SLIDER
 function ProductSlider() {
     const [active, setActive] = useState(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -275,7 +273,7 @@ function ProductSlider() {
 
     return (
         <div>
-            <div className="grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-lg border border-[#1a2744]/10 bg-[#1a2744]">
+            <div className="grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-lg bg-black">
                 <div className="flex flex-col justify-between p-8 sm:p-10">
                     <div>
                         <div className="flex items-center gap-3 mb-5">
@@ -293,12 +291,6 @@ function ProductSlider() {
                         </div>
                         <p className="text-gray-400 text-sm leading-relaxed">{p.desc}</p>
                     </div>
-                    <Link
-                        to="/product"
-                        className="mt-6 inline-flex items-center gap-2 bg-[#FFD700] hover:bg-[#FFD700]/80 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 no-underline w-max"
-                    >
-                        Selengkapnya <ChevronRight className="w-4 h-4" />
-                    </Link>
                 </div>
                 <div className="relative bg-[#0f1a30] min-h-[240px] md:min-h-0 flex items-center justify-center overflow-hidden">
                     <img
