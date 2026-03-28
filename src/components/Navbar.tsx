@@ -77,9 +77,6 @@ function LangDropdown({ scrolled }: { scrolled: boolean }) {
               onClick={() => select(l)}
               className="w-full text-left px-4 py-3 transition-colors duration-150 hover:bg-gray-50 flex flex-col gap-0.5"
             >
-              <span className="text-xs font-bold text-gray-400">
-                {l === "ID" ? "ID" : "GB"}
-              </span>
               <span
                 className="text-sm font-bold"
                 style={{ color: lang === l ? "#111827" : "#6b7280" }}
