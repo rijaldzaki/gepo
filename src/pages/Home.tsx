@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Sun, Layers, Zap, Cpu  } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { MdOutlineEnergySavingsLeaf } from "react-icons/md";
 import { TbBuildingFactory } from "react-icons/tb";
 import { FaSolarPanel } from "react-icons/fa6";
@@ -32,56 +32,54 @@ const partners = [
     { name: "Wakaf Energi",         logo: "/images/partners/wakaf_energi.png" },
 ];
 
-const products = [
+// Tambah data ini di bagian DATA
+const homeProducts = [
     {
-        id: "ongrid",
-        label: "ONGRID",
+        id: "monofacial",
+        label: "Monofacial",
+        num: "01",
         title: "Panel Surya Monofacial",
         subtitle: "Pilihan Terpercaya & Terjangkau",
-        desc: "Teknologi panel surya paling populer di Indonesia. Panel ini menangkap sinar matahari dari sisi depan dengan efisiensi tinggi, tersedia dalam berbagai ukuran daya yang menyesuaikan kebutuhan listrik Anda.",
-        photo: "/images/products/mono1.jpg",
-        icon: Sun,
+        desc: "Teknologi panel surya paling populer di Indonesia dengan efisiensi tinggi dan harga terjangkau.",
+        photo: "/images/products/monofacial1.jpg",
+        accent: "#FFD700",
     },
     {
-        id: "offgrid",
-        label: "OFF GRID",
+        id: "bifacial",
+        label: "Bifacial",
+        num: "02",
         title: "Panel Surya Bifacial",
         subtitle: "Produksi Listrik Ekstra hingga 30%",
-        desc: "Panel surya bifacial menyerap cahaya dari sisi depan dan belakang, memanfaatkan pantulan cahaya untuk menghasilkan hingga 30% energi lebih banyak dibanding panel monofacial.",
+        desc: "Menyerap cahaya dari dua sisi untuk menghasilkan energi hingga 30% lebih banyak.",
         photo: "/images/products/bifacial1.png",
-        icon: Layers,
+        accent: "#E38E00",
     },
     {
-        id: "hybrid",
-        label: "HYBRID",
+        id: "rooftile",
+        label: "Rooftile",
+        num: "03",
         title: "Panel Surya Rooftile",
         subtitle: "Elegan & Terintegrasi",
-        desc: "Building Integrated Photovoltaic (BIPV) menggantikan atap genteng konvensional. Tampilan seamless, modern, dan estetis — atap Anda langsung menjadi sumber energi hijau.",
+        desc: "Atap genteng sekaligus pembangkit listrik — estetis, modern, dan fungsional.",
         photo: "/images/products/rooftile1.png",
-        icon: Zap,
+        accent: "#D25738",
     },
     {
         id: "smartcontrol",
-        label: "SMART CONTROL",
+        label: "Smart Control",
+        num: "04",
         title: "Smart Control System",
         subtitle: "Pantau & Kontrol Real-Time 24/7",
-        desc: "Kombinasi inverter canggih, baterai, dan sistem IoT yang membuat PLTS Anda lebih pintar, efisien, dan mandiri. Dapat disesuaikan dengan kebutuhan dan keinginan Anda.",
-        photo: "/images/products/smartcontrol.jpg",
-        icon: Cpu,
+        desc: "Sistem IoT canggih untuk memantau dan mengelola PLTS Anda dari mana saja.",
+        photo: "/images/products/smart-control.png",
+        accent: "#9D3115",
     },
 ];
 
-const certs = [
-    {
-        title: "NIB",
-        desc: "Sertifikat Perizinan Usaha Berbasis Risiko yang valid dan diakui pemerintah.",
-        logo: "/images/sertifikat/nib.jpg",
-    },
-    {
-        title: "Sertifikat SNI",
-        desc: "Lulus uji ketahanan sertifikasi standar nasional Indonesia.",
-        logo: "/images/sertifikat/sni.jpg",
-    },
+const homeServices = [
+    { label: "Studi & Desain",       photo: "/images/products/study1.png" },
+    { label: "Instalasi & Uji",      photo: "/images/products/installation1.jpeg" },
+    { label: "Operasi & Pemeliharaan", photo: "/images/products/operational1.png" },
 ];
 
 // COUNTING HOOK
@@ -246,14 +244,13 @@ function Marquee() {
     );
 }
 
-// PRODUCT SLIDER
 function ProductSlider() {
     const [active, setActive] = useState(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     const startTimer = () => {
         timerRef.current = setInterval(() => {
-            setActive((prev) => (prev + 1) % products.length);
+            setActive((prev) => (prev + 1) % homeProducts.length);
         }, 4000);
     };
 
@@ -268,60 +265,121 @@ function ProductSlider() {
         startTimer();
     };
 
-    const p = products[active];
-    const Icon = p.icon;
+    const p = homeProducts[active];
 
     return (
-        <div>
-            <div className="grid md:grid-cols-3 gap-0 rounded-3xl overflow-hidden shadow-lg border border-black bg-black">
-                <div className="flex flex-col justify-between p-8 sm:p-10">
-                    <div>
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="w-9 h-9 rounded-xl bg-[#FFD700]/20 flex items-center justify-center">
-                                <Icon className="w-4 h-4 text-[#FFD700]" />
-                            </div>
-                            <span className="text-xs font-bold tracking-widest text-[#FFD700] uppercase">{p.label}</span>
+        <div className="rounded-3xl overflow-hidden bg-black">
+            {/* ── Main area ── */}
+            <div className="flex flex-col md:flex-row min-h-[380px]">
+                {/* Kiri — Info produk */}
+                <div className="relative flex flex-col justify-between p-8 sm:p-10 md:flex-1 bg-black">
+                    {/* Subtle background foto — opacity sangat rendah sebagai tekstur */}
+                    {homeProducts.map((prod, i) => (
+                        <img
+                            key={prod.id}
+                            src={prod.photo}
+                            alt={prod.title}
+                            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+                            style={{
+                                opacity: active === i ? 0.08 : 0,
+                                transition: "opacity 0.8s ease",
+                            }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                    ))}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-black/80 pointer-events-none" />
+
+                    <div className="relative z-10">
+                        {/* Nomor & label */}
+                        <div className="flex items-center gap-3 mb-6">
+                            <span
+                                className="text-5xl font-extrabold leading-none select-none"
+                                style={{ color: p.accent + "30" }}
+                            >
+                                {p.num}
+                            </span>
+                            <span
+                                className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
+                                style={{ background: p.accent + "20", color: p.accent, border: `1px solid ${p.accent}40` }}
+                            >
+                                {p.label}
+                            </span>
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-snug mb-2">{p.title}</h3>
-                        <p className="text-[#FFD700]/80 text-sm font-semibold mb-4">{p.subtitle}</p>
-                        <p className="text-gray-400 text-sm leading-relaxed">{p.desc}</p>
+
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-snug mb-3">
+                            {p.title}
+                        </h3>
+                        <p className="text-sm font-semibold mb-4" style={{ color: p.accent }}>
+                            {p.subtitle}
+                        </p>
+                        <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+                            {p.desc}
+                        </p>
                     </div>
                 </div>
-                <div className="relative bg-[#0f1a30] min-h-[240px] md:min-h-0 flex items-center justify-center overflow-hidden">
-                    <img
-                        key={p.id}
-                        src={p.photo}
-                        alt={p.title}
-                        className="w-full h-full object-cover absolute inset-0"
-                        style={{ transition: "opacity 0.5s ease" }}
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+
+                {/* Kanan — Foto 1:1 */}
+                <div className="relative md:w-80 lg:w-96 aspect-square md:aspect-auto flex-shrink-0 bg-gray-900 flex items-center justify-center p-5">
+                    {homeProducts.map((prod, i) => (
+                        <img
+                            key={prod.id}
+                            src={prod.photo}
+                            alt={prod.title}
+                            className="rounded-2xl object-contain w-full h-full"
+                            style={{
+                                opacity: active === i ? 1 : 0,
+                                transition: "",
+                                position: active === i ? "relative" : "absolute",
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                            }}
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                    ))}
+                    {/* Subtle gradient overlay kiri */}
+                    <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: `linear-gradient(to right, black 0%, transparent 30%), linear-gradient(to top, ${p.accent}15 0%, transparent 50%)` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1a2744]/40" />
                 </div>
+
             </div>
 
-            <div className="flex gap-0 mt-4 border-b border-gray-200">
-                {products.map((prod, i) => (
+            {/* ── Tab bar bawah ── */}
+            <div
+                className="flex border-t"
+                style={{ borderColor: "rgba(255,255,255,0.08)" }}
+            >
+                {homeProducts.map((prod, i) => (
                     <button
                         key={prod.id}
                         onClick={() => handleTab(i)}
-                        className={`relative flex-1 text-xs font-bold tracking-wider uppercase pb-3 pt-2 transition-colors duration-200 ${
-                            active === i ? "text-[#1a2744]" : "text-gray-400 hover:text-gray-600"
-                        }`}
+                        className="relative flex-1 py-4 text-xs font-bold tracking-widest uppercase transition-all duration-300"
+                        style={{
+                            color: active === i ? prod.accent : "rgba(255,255,255,0.35)",
+                            background: active === i ? "rgba(255,255,255,0.05)" : "transparent",
+                        }}
                     >
                         {prod.label}
-                        {active === i && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1a2744] rounded-full" />}
+                        {/* Progress bar */}
+                        {active === i && (
+                            <span
+                                key={active}
+                                className="absolute bottom-0 left-0 h-0.5 rounded-full"
+                                style={{
+                                    background: prod.accent,
+                                    animation: "progress-bar 4s linear forwards",
+                                }}
+                            />
+                        )}
                     </button>
                 ))}
-            </div>
-
-            <div className="h-0.5 bg-gray-100 rounded-full mt-0 overflow-hidden">
-                <div
-                    key={active}
-                    className="h-full bg-[#FFD700] rounded-full"
-                    style={{ animation: "progress 4s linear forwards" }}
-                />
-                <style>{`@keyframes progress { from { width: 0%; } to { width: 100%; } }`}</style>
+                <style>{`
+                    @keyframes progress-bar {
+                        from { width: 0%; }
+                        to   { width: 100%; }
+                    }
+                `}</style>
             </div>
         </div>
     );
@@ -408,55 +466,61 @@ export default function Home() {
             </section>
 
             {/*PRODUK*/}
-            <section className="py-20 sm:py-28 bg-gray-50">
+            <section className="py-14 sm:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                         <div>
-                            <h2 className="text-2xl sm:text-3xl max-w-2xl font-extrabold text-gray-900">Teknologi unggulan yang dapat menyesuaikan kebutuhan listrik Anda</h2>
+                            <p className="text-xs font-bold tracking-widest uppercase text-[#FFD700] mb-2">Produk & Layanan</p>
+                            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 max-w-sm leading-snug">
+                                Teknologi unggulan untuk kebutuhan listrik Anda
+                            </h2>
                         </div>
                         <Link
                             to="/product"
-                            className="inline-flex items-center gap-2 border-2 border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-full transition-all duration-300 no-underline flex-shrink-0"
+                            className="inline-flex items-center gap-2 border border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-300 no-underline flex-shrink-0"
                         >
                             Selengkapnya <ChevronRight className="w-4 h-4" />
                         </Link>
                     </div>
-                    <ProductSlider />
-                </div>
-            </section>
 
-            {/*SERTIFIKASI & LEGALITAS*/}
-            <section className="py-20 sm:py-28 bg-white">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
-                        <span className="font-extrabold">Tersertifikasi</span>{" "}
-                        <span className="font-light text-gray-500">& Legal</span>
-                    </h2>
-                    <p className="text-gray-500 mb-12 max-w-md mx-auto">
-                        Beroperasi dengan standar hukum dan mutu yang terverifikasi
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-6 text-left">
-                        {certs.map((cert, i) => (
-                            <div key={i} className="flex items-center gap-6 bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300">
-                                <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
-                                    <img
-                                        src={cert.logo}
-                                        alt={cert.title}
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                            const el = e.target as HTMLImageElement;
-                                            el.style.display = "none";
-                                            if (el.parentElement) el.parentElement.textContent = cert.title;
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <h3 className="font-extrabold text-gray-900 text-lg mb-1">{cert.title}</h3>
-                                    <p className="text-sm text-gray-500 leading-relaxed">{cert.desc}</p>
+                    {/* Product slider */}
+                    <ProductSlider />
+
+                    {/* Service strip — di bawah, 3 card berjajar */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                        {homeServices.map((svc, i) => (
+                            <div
+                                key={i}
+                                className="relative rounded-2xl overflow-hidden flex items-end"
+                                style={{ height: "160px" }}
+                            >
+                                <img
+                                    src={svc.photo}
+                                    alt={svc.label}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                    onError={(e) => {
+                                        const el = e.target as HTMLImageElement;
+                                        el.style.display = "none";
+                                        if (el.parentElement) el.parentElement.style.background = "#111827";
+                                    }}
+                                />
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                {/* Nomor + label */}
+                                <div className="relative z-10 px-5 pb-5 flex items-end justify-between w-full">
+                                    <p className="text-white text-sm font-bold leading-snug">{svc.label}</p>
+                                    <span
+                                        className="text-3xl font-extrabold leading-none select-none"
+                                        style={{ color: "rgba(255,255,255,0.12)" }}
+                                    >
+                                        {String(i + 1).padStart(2, "0")}
+                                    </span>
                                 </div>
                             </div>
                         ))}
                     </div>
+
                 </div>
             </section>
 
