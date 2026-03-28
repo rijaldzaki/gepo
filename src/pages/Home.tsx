@@ -52,7 +52,7 @@ const homeProducts = [
         subtitle: "Produksi Listrik Ekstra hingga 30%",
         desc: "Menyerap cahaya dari dua sisi untuk menghasilkan energi hingga 30% lebih banyak.",
         photo: "/images/products/bifacial1.png",
-        accent: "#E38E00",
+        accent: "#FFD700",
     },
     {
         id: "rooftile",
@@ -62,7 +62,7 @@ const homeProducts = [
         subtitle: "Elegan & Terintegrasi",
         desc: "Atap genteng sekaligus pembangkit listrik — estetis, modern, dan fungsional.",
         photo: "/images/products/rooftile1.png",
-        accent: "#D25738",
+        accent: "#FFD700",
     },
     {
         id: "smartcontrol",
@@ -72,12 +72,12 @@ const homeProducts = [
         subtitle: "Pantau & Kontrol Real-Time 24/7",
         desc: "Sistem IoT canggih untuk memantau dan mengelola PLTS Anda dari mana saja.",
         photo: "/images/products/smart-control.png",
-        accent: "#9D3115",
+        accent: "#FFD700",
     },
 ];
 
 const homeServices = [
-    { label: "Studi & Desain",       photo: "/images/products/study1.png" },
+    { label: "Studi & Desain",       photo: "/images/products/study3.png" },
     { label: "Instalasi & Uji",      photo: "/images/products/installation1.jpeg" },
     { label: "Operasi & Pemeliharaan", photo: "/images/products/operational1.png" },
 ];
@@ -293,12 +293,6 @@ function ProductSlider() {
                         {/* Nomor & label */}
                         <div className="flex items-center gap-3 mb-6">
                             <span
-                                className="text-5xl font-extrabold leading-none select-none"
-                                style={{ color: p.accent + "30" }}
-                            >
-                                {p.num}
-                            </span>
-                            <span
                                 className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
                                 style={{ background: p.accent + "20", color: p.accent, border: `1px solid ${p.accent}40` }}
                             >
@@ -319,7 +313,7 @@ function ProductSlider() {
                 </div>
 
                 {/* Kanan — Foto 1:1 */}
-                <div className="relative md:w-80 lg:w-96 aspect-square md:aspect-auto flex-shrink-0 bg-gray-900 flex items-center justify-center p-5">
+                <div className="relative md:w-80 lg:w-96 aspect-square md:aspect-auto flex-shrink-0 flex items-center justify-center p-5">
                     {homeProducts.map((prod, i) => (
                         <img
                             key={prod.id}
@@ -356,8 +350,8 @@ function ProductSlider() {
                         onClick={() => handleTab(i)}
                         className="relative flex-1 py-4 text-xs font-bold tracking-widest uppercase transition-all duration-300"
                         style={{
-                            color: active === i ? prod.accent : "rgba(255,255,255,0.35)",
-                            background: active === i ? "rgba(255,255,255,0.05)" : "transparent",
+                            color: active === i ? prod.accent : "rgba(255, 255, 255, 0.53)",
+                            background: active === i ? "#ffd90017" : "transparent",
                         }}
                     >
                         {prod.label}
@@ -388,7 +382,7 @@ function ProductSlider() {
 // ── HOME PAGE ─────────────────────────────────────────────────────────────────
 export default function Home() {
     return (
-        <div className="bg-white text-gray-900">
+        <div className="bg-white">
             {/*HERO*/}
             <section className="relative min-h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
                 <div
@@ -407,7 +401,7 @@ export default function Home() {
                     </p>
                     <Link
                         to="/product"
-                        className="bg-black hover:bg-[#FFD700] text-white hover:text-black font-semibold text-sm sm:text-sm tracking-widest uppercase px-8 py-5 rounded-full transition-all duration-300 no-underline"
+                        className="bg-black hover:bg-[#FFD700] text-white hover:text-black font-semibold text-sm sm:text-sm tracking-widest uppercase px-8 py-5 rounded-full hover:scale-105 transition-all duration-500 no-underline"
                     >
                         Jelajahi Solusi Kami
                     </Link>
@@ -430,7 +424,7 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 sm:gap-20 items-center">
                         <div>
-                            <h2 className="text-2xl sm:text-4xl font-extrabold italic text-black leading-tight mb-5">
+                            <h2 className="text-2xl sm:text-3xl font-extrabold italic text-black leading-tight mb-5">
                                 Powering Your Life{" "}
                             </h2>
                             <p className="text-gray-500 text-base leading-relaxed mb-8">
@@ -468,16 +462,15 @@ export default function Home() {
             {/*PRODUK*/}
             <section className="py-14 sm:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                         <div>
-                            <p className="text-xs font-bold tracking-widest uppercase text-[#FFD700] mb-2">Produk & Layanan</p>
-                            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 max-w-sm leading-snug">
-                                Teknologi unggulan untuk kebutuhan listrik Anda
+                            <h2 className="text-2xl sm:text-3xl font-extrabold text-black max-w-max leading-snug">
+                                Produk dan Solusi Lengkap Kami
                             </h2>
                         </div>
                         <Link
                             to="/product"
-                            className="inline-flex items-center gap-2 border border-gray-900 hover:bg-gray-900 hover:text-white text-gray-900 font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-300 no-underline flex-shrink-0"
+                            className="inline-flex items-center gap-2 border border-black hover:bg-gray-900 hover:text-white text-black font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-300 no-underline flex-shrink-0"
                         >
                             Selengkapnya <ChevronRight className="w-4 h-4" />
                         </Link>
@@ -487,12 +480,12 @@ export default function Home() {
                     <ProductSlider />
 
                     {/* Service strip — di bawah, 3 card berjajar */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
                         {homeServices.map((svc, i) => (
                             <div
                                 key={i}
                                 className="relative rounded-2xl overflow-hidden flex items-end"
-                                style={{ height: "160px" }}
+                                style={{ height: "300px" }}
                             >
                                 <img
                                     src={svc.photo}
@@ -512,7 +505,7 @@ export default function Home() {
                                     <p className="text-white text-sm font-bold leading-snug">{svc.label}</p>
                                     <span
                                         className="text-3xl font-extrabold leading-none select-none"
-                                        style={{ color: "rgba(255,255,255,0.12)" }}
+                                        style={{ color: "#ffd90076" }}
                                     >
                                         {String(i + 1).padStart(2, "0")}
                                     </span>
@@ -524,22 +517,67 @@ export default function Home() {
                 </div>
             </section>
 
+            {/*VIDEO*/}
+            <section className="py-14 sm:py-16 bg-white">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Heading */}
+                    <div className="text-center mb-10">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-black leading-snug">
+                            Lihat Bagaimana Kami Bekerja
+                        </h2>
+                    </div>
+
+                    {/* Video wrapper */}
+                    <div
+                        className="relative rounded-3xl overflow-hidden shadow-2xl"
+                        style={{
+                            border: "1px solid rgba(255,215,0,0.15)",
+                            background: "#0a0a0a",
+                        }}
+                    >
+                        {/* Decorative accent bar atas */}
+                        <div
+                            className="absolute top-0 left-0 right-0 h-0.5 z-10"
+                            style={{ background: "linear-gradient(to right, transparent, #FFD700, transparent)" }}
+                        />
+
+                        {/* Aspect ratio wrapper 16:9 */}
+                        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/CDc2dDFcqmg?rel=0&modestbranding=1&autoplay=1&mute=1"
+                                title="Gepo Energy — Company Video"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                style={{ border: "none" }}
+                            />
+                        </div>
+
+                        {/* Decorative accent bar bawah */}
+                        <div
+                            className="absolute bottom-0 left-0 right-0 h-0.5 z-10"
+                            style={{ background: "linear-gradient(to right, transparent, #FFD700, transparent)" }}
+                        />
+                    </div>
+                </div>
+            </section>
+
             {/*CTA BANNER*/}
-            <section className="relative py-28 sm:py-36 text-white text-center overflow-hidden">
+            <section className="relative py-14 sm:py-16 text-white text-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: "url('/images/cta-solar-bg.jpg')" }}
+                    style={{ backgroundImage: "url('/images/home-bt.png')" }}
                 />
-                <div className="absolute inset-0 bg-gray-900/65" />
-                <div className="relative z-10 max-w-2xl mx-auto px-4">
-                    <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-8">
-                        Beralih ke Energi Hijau Bersama Gepo Energy
+                <div className="absolute inset-0 bg-gray-900/80" />
+                <div className="relative z-10 max-w-xl mx-auto px-4">
+                    <h2 className="text-2xl sm:text-3xl font-semibold leading-tight mb-8">
+                        Beralih ke Energi Hijau Bersama <span className="font-bold">Gepo Energy</span>
                     </h2>
                     <Link
                         to="/contact"
-                        className="inline-flex items-center gap-2 bg-[#FFD700] hover:bg-[#FFD700]/80 text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 no-underline text-base"
+                        className="inline-flex items-center gap-2 bg-[#FFD700] hover:bg-[#FFD700]/80 text-black font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 no-underline text-sm"
                     >
-                        Hubungi Kami
+                        Hubungi Kami <ChevronRight className="w-4 h-4" />
                     </Link>
                 </div>
             </section>
