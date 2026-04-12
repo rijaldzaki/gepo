@@ -79,7 +79,7 @@ function LangDropdown({ scrolled }: { scrolled: boolean }) {
             >
               <span
                 className="text-sm font-bold"
-                style={{ color: lang === l ? "#111827" : "#6b7280" }}
+                style={{ color: lang === l ? "#6b7280 " : "#000000" }}
               >
                 {l === "ID" ? "Indonesia" : "English"}
               </span>

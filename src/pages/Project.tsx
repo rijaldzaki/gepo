@@ -21,11 +21,31 @@ const radarIcon = new L.DivIcon({
     popupAnchor: [0, -20],
 });
 
-// Static project data (coords, capacity, type, photos never change)
 const projectsStatic = [
-    { id: 1, lat: -7.817, lng: 110.456, capacity: "300 Wp", tipe: "Hybrid", panel: "Monofacial", photos: ["/images/projects/tamanan1.jpeg", "/images/projects/tamanan2.png"] },
-    { id: 2, lat: -7.503, lng: 111.458, capacity: "3000 Wp", tipe: "Hybrid", panel: "Monofacial", photos: ["/images/projects/pitu1.jpeg", "/images/projects/pitu2.png"] },
-    { id: 3, lat: -7.953, lng: 110.432, capacity: "2500 Wp", tipe: "Hybrid", panel: "Monofacial", photos: ["/images/projects/dlingo1.jpeg", "/images/projects/dlingo2.jpeg"] },
+    {
+        id: 1,
+        lat: -7.817,
+        lng: 110.456,
+        capacity: "300 Wp",
+        tipe: "Hybrid",
+        photos: ["/images/projects/tamanan1.jpeg", "/images/projects/tamanan2.png"],
+    },
+    {
+        id: 2,
+        lat: -7.503,
+        lng: 111.458,
+        capacity: "3000 Wp",
+        tipe: "Hybrid",
+        photos: ["/images/projects/pitu1.jpeg", "/images/projects/pitu2.png"],
+    },
+    {
+        id: 3,
+        lat: -7.953,
+        lng: 110.432,
+        capacity: "2500 Wp",
+        tipe: "Hybrid",
+        photos: ["/images/projects/dlingo1.jpeg", "/images/projects/dlingo2.jpeg"],
+    },
 ];
 
 function ProjectPopup({ projectIndex }: { projectIndex: number }) {
@@ -34,7 +54,11 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
     const sp = projectsStatic[projectIndex];
 
     const titles = [t(p.p1Title), t(p.p2Title), t(p.p3Title)];
-    const locations = [t(p.p1Location), t(p.p2Location), t(p.p3Location)];
+    const locations = [
+        t(p.p1Location),
+        t(p.p2Location),
+        t(p.p3Location),
+    ];
     const descs = [t(p.p1Desc), t(p.p2Desc), t(p.p3Desc)];
 
     const [slide, setSlide] = useState(0);
@@ -43,7 +67,10 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
 
     useEffect(() => {
         if (!hasMultiple) return;
-        timerRef.current = setInterval(() => setSlide((s) => (s + 1) % sp.photos.length), 3000);
+        timerRef.current = setInterval(
+            () => setSlide((s) => (s + 1) % sp.photos.length),
+            5000
+        );
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
@@ -52,29 +79,77 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
     const goTo = (i: number) => {
         if (timerRef.current) clearInterval(timerRef.current);
         setSlide(i);
-        if (hasMultiple) timerRef.current = setInterval(() => setSlide((s) => (s + 1) % sp.photos.length), 3000);
+        if (hasMultiple)
+            timerRef.current = setInterval(
+                () => setSlide((s) => (s + 1) % sp.photos.length),
+                5000
+            );
     };
 
-    const prev = () => goTo((slide - 1 + sp.photos.length) % sp.photos.length);
-    const next = () => goTo((slide + 1) % sp.photos.length);
-
     return (
-        <div style={{ width: "350px", fontFamily: "inherit" }}>
-            <div style={{ background: "#FFD700", color: "#fff", padding: "14px 16px", borderRadius: "10px 10px 0 0" }}>
-                <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700 }}>{titles[projectIndex]}</h3>
-                <p style={{ margin: "4px 0 0", fontSize: "13px", fontWeight: 500, display: "flex", alignItems: "center", gap: "4px" }}>
-                    <FaMapMarkerAlt style={{ width: "14px", height: "14px" }} />
+        <div style={{ width: "min(320px, 88vw)", fontFamily: "inherit" }}>
+            {/* Header */}
+            <div
+                style={{
+                    background: "#FFD700",
+                    color: "#fff",
+                    padding: "12px 14px",
+                    borderRadius: "10px 10px 0 0",
+                }}
+            >
+                <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 700 }}>
+                    {titles[projectIndex]}
+                </h3>
+                <p
+                    style={{
+                        margin: "3px 0 0",
+                        fontSize: "12px",
+                        fontWeight: 500,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                    }}
+                >
+                    <FaMapMarkerAlt style={{ width: "12px", height: "12px", flexShrink: 0 }} />
                     {locations[projectIndex]}
                 </p>
             </div>
-            <div style={{ height: "160px", background: "#e5e7eb", overflow: "hidden", position: "relative" }}>
-                <div style={{ display: "flex", width: `${sp.photos.length * 100}%`, height: "100%", transform: `translateX(-${slide * (100 / sp.photos.length)}%)`, transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)" }}>
+
+            {/* Foto slider */}
+            <div
+                style={{
+                    height: "140px",
+                    background: "#e5e7eb",
+                    overflow: "hidden",
+                    position: "relative",
+                }}
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        width: `${sp.photos.length * 100}%`,
+                        height: "100%",
+                        transform: `translateX(-${slide * (100 / sp.photos.length)}%)`,
+                        transition: "transform 0.5s cubic-bezier(0.4,0,0.2,1)",
+                    }}
+                >
                     {sp.photos.map((src, i) => (
-                        <div key={i} style={{ width: `${100 / sp.photos.length}%`, height: "100%", flexShrink: 0 }}>
+                        <div
+                            key={i}
+                            style={{
+                                width: `${100 / sp.photos.length}%`,
+                                height: "100%",
+                                flexShrink: 0,
+                            }}
+                        >
                             <img
                                 src={src}
                                 alt={`foto ${i + 1}`}
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                }}
                                 onError={(e) => {
                                     const img = e.target as HTMLImageElement;
                                     const parent = img.parentElement;
@@ -83,8 +158,9 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
                                     parent.style.display = "flex";
                                     parent.style.alignItems = "center";
                                     parent.style.justifyContent = "center";
-                                    parent.style.fontSize = "13px";
-                                    parent.innerText = "[ Foto Proyek ]";
+                                    parent.style.fontSize = "12px";
+                                    parent.style.color = "#9ca3af";
+                                    parent.innerText = "[ Foto ]";
                                 }}
                             />
                         </div>
@@ -93,14 +169,16 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
                 {hasMultiple && (
                     <>
                         <button
-                            onClick={prev}
+                            onClick={() =>
+                                goTo((slide - 1 + sp.photos.length) % sp.photos.length)
+                            }
                             style={{
                                 position: "absolute",
                                 left: "6px",
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                width: "28px",
-                                height: "28px",
+                                width: "26px",
+                                height: "26px",
                                 borderRadius: "50%",
                                 background: "rgba(255,255,255,0.9)",
                                 border: "1px solid #e5e7eb",
@@ -111,17 +189,19 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
                                 zIndex: 10,
                             }}
                         >
-                            <ChevronLeft style={{ width: "14px", height: "14px", color: "#374151" }} />
+                            <ChevronLeft
+                                style={{ width: "13px", height: "13px", color: "#374151" }}
+                            />
                         </button>
                         <button
-                            onClick={next}
+                            onClick={() => goTo((slide + 1) % sp.photos.length)}
                             style={{
                                 position: "absolute",
                                 right: "6px",
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                width: "28px",
-                                height: "28px",
+                                width: "26px",
+                                height: "26px",
                                 borderRadius: "50%",
                                 background: "rgba(255,255,255,0.9)",
                                 border: "1px solid #e5e7eb",
@@ -132,16 +212,28 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
                                 zIndex: 10,
                             }}
                         >
-                            <ChevronRight style={{ width: "14px", height: "14px", color: "#374151" }} />
+                            <ChevronRight
+                                style={{ width: "13px", height: "13px", color: "#374151" }}
+                            />
                         </button>
-                        <div style={{ position: "absolute", bottom: "8px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "5px", zIndex: 10 }}>
+                        <div
+                            style={{
+                                position: "absolute",
+                                bottom: "7px",
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                display: "flex",
+                                gap: "5px",
+                                zIndex: 10,
+                            }}
+                        >
                             {sp.photos.map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => goTo(i)}
                                     style={{
-                                        width: slide === i ? "16px" : "6px",
-                                        height: "6px",
+                                        width: slide === i ? "14px" : "5px",
+                                        height: "5px",
                                         borderRadius: "9999px",
                                         background: slide === i ? "#FFD700" : "rgba(255,255,255,0.6)",
                                         border: "none",
@@ -155,18 +247,62 @@ function ProjectPopup({ projectIndex }: { projectIndex: number }) {
                     </>
                 )}
             </div>
-            <div style={{ padding: "14px 16px", background: "#fff" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px", paddingBottom: "14px", borderBottom: "1px solid #f3f4f6" }}>
-                    <div style={{ background: "#fffbebda", borderRadius: "8px", padding: "10px 12px" }}>
-                        <p style={{ margin: 0, fontSize: "11px", color: "#FFD700", fontWeight: 600, textTransform: "uppercase" }}>{t(tr.project.kapasitas)}</p>
-                        <p style={{ margin: "4px 0 0", fontSize: "12px", fontWeight: 700, color: "#111827" }}>{sp.capacity}</p>
+
+            {/* Body */}
+            <div style={{ padding: "12px 14px", background: "#fff" }}>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "8px",
+                        marginBottom: "12px",
+                        paddingBottom: "12px",
+                        borderBottom: "1px solid #f3f4f6",
+                    }}
+                >
+                    <div style={{ background: "#fffbebda", borderRadius: "8px", padding: "8px 10px" }}>
+                        <p
+                            style={{
+                                margin: 0,
+                                fontSize: "10px",
+                                color: "#FFD700",
+                                fontWeight: 600,
+                                textTransform: "uppercase",
+                            }}
+                        >
+                            {t(tr.project.kapasitas)}
+                        </p>
+                        <p style={{ margin: "3px 0 0", fontSize: "12px", fontWeight: 700, color: "#111827" }}>
+                            {sp.capacity}
+                        </p>
                     </div>
-                    <div style={{ background: "#fffbebda", borderRadius: "8px", padding: "10px 12px" }}>
-                        <p style={{ margin: 0, fontSize: "11px", color: "#FFD700", fontWeight: 600, textTransform: "uppercase" }}>{t(tr.project.tipe)}</p>
-                        <p style={{ margin: "4px 0 0", fontSize: "12px", fontWeight: 700, color: "#111827" }}>{sp.tipe}</p>
+                    <div style={{ background: "#fffbebda", borderRadius: "8px", padding: "8px 10px" }}>
+                        <p
+                            style={{
+                                margin: 0,
+                                fontSize: "10px",
+                                color: "#FFD700",
+                                fontWeight: 600,
+                                textTransform: "uppercase",
+                            }}
+                        >
+                            {t(tr.project.tipe)}
+                        </p>
+                        <p style={{ margin: "3px 0 0", fontSize: "12px", fontWeight: 700, color: "#111827" }}>
+                            {sp.tipe}
+                        </p>
                     </div>
                 </div>
-                <p style={{ margin: 0, fontSize: "12px", color: "#4b5563", lineHeight: "1.7" }}>{descs[projectIndex]}</p>
+                <p
+                    style={{
+                        margin: 0,
+                        fontSize: "12px",
+                        color: "#4b5563",
+                        lineHeight: "1.65",
+                    }}
+                >
+                    {descs[projectIndex]}
+                </p>
             </div>
         </div>
     );
@@ -177,7 +313,7 @@ const leafletStyle = `
     .leaflet-popup-content { margin:0!important;width:auto!important; }
     .leaflet-popup-tip-container { margin-top:-1px; }
     .leaflet-container { font-family:inherit;z-index:0; }
-    .leaflet-popup-close-button { width:28px!important;height:28px!important;top:8px!important;right:8px!important;font-size:18px!important;font-weight:700!important;color:#fff!important;background:rgba(0,0,0,0.25)!important;border-radius:6px!important;border:1px solid #fff!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important; }
+    .leaflet-popup-close-button { width:26px!important;height:26px!important;top:7px!important;right:7px!important;font-size:16px!important;font-weight:700!important;color:#fff!important;background:rgba(0,0,0,0.25)!important;border-radius:6px!important;border:1px solid rgba(255,255,255,0.5)!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important; }
     .leaflet-popup-close-button:hover { background:rgba(0,0,0,0.5)!important; }
     .radar-wrapper { position:relative;display:block;width:24px;height:24px; }
     .radar-core { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:#FFD700;border:2.5px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #FFD700;z-index:2; }
@@ -185,9 +321,9 @@ const leafletStyle = `
     .radar-ring-1 { width:24px;height:24px;animation-delay:0s; }
     .radar-ring-2 { width:24px;height:24px;animation-delay:0.8s; }
     @keyframes radar-pulse { 0% { transform:translate(-50%,-50%) scale(0.3);opacity:0.8; } 100% { transform:translate(-50%,-50%) scale(2.2);opacity:0; } }
-    .leaflet-bottom.leaflet-right { bottom:16px;right:16px; }
+    .leaflet-bottom.leaflet-right { bottom:12px;right:12px; }
     .leaflet-control-zoom { border:1px solid #e5e7eb!important;border-radius:8px!important;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)!important; }
-    .leaflet-control-zoom a { width:32px!important;height:32px!important;line-height:32px!important;font-size:18px!important;color:#000!important; }
+    .leaflet-control-zoom a { width:30px!important;height:30px!important;line-height:30px!important;font-size:16px!important;color:#000!important; }
 `;
 
 export default function Project() {
@@ -205,36 +341,69 @@ export default function Project() {
 
     return (
         <div className="bg-white text-black">
-            <section className="relative bg-white text-white text-center overflow-hidden h-screen sm:h-[50vh] flex items-center justify-center">
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/project-bg.png')" }} />
+            {/* HERO */}
+            <section className="relative text-white text-center overflow-hidden h-[50vh] flex items-center justify-center">
+                <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: "url('/images/project-bg.png')" }}
+                />
                 <div className="absolute inset-0 bg-gray-900/50" />
-                <div className="relative z-10 max-w-3xl mx-auto px-4">
-                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{t(p.heroTitle)}</h1>
+                <div className="relative z-10 max-w-3xl mx-auto px-8">
+                    <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+                        {t(p.heroTitle)}
+                    </h1>
                 </div>
             </section>
 
-            <section className="py-14 px-4 sm:px-8">
+            {/* MAP SECTION */}
+            <section className="py-10 sm:py-14 px-8">
                 <div className="max-w-6xl mx-auto">
-                    <div className="mb-8 text-center">
-                        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{t(p.mapTitle)}</h2>
-                        <p className="text-gray-500 text-sm sm:text-base">{t(p.mapSubtitle)}</p>
+                    <div className="mb-6 sm:mb-8 text-center">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+                            {t(p.mapTitle)}
+                        </h2>
+                        <p className="text-gray-500 text-sm sm:text-base">
+                            {t(p.mapSubtitle)}
+                        </p>
                     </div>
-                    <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-lg" style={{ height: "600px", position: "relative", zIndex: 0 }}>
-                        <MapContainer center={[-7.5, 110.5]} zoom={8} style={{ width: "100%", height: "100%" }} scrollWheelZoom={false} zoomControl={false}>
+
+                    <div
+                        className="rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shadow-lg"
+                        style={{
+                            height: "clamp(320px, 55vw, 600px)",
+                            position: "relative",
+                            zIndex: 0,
+                        }}
+                    >
+                        <MapContainer
+                            center={[-7.5, 110.5]}
+                            zoom={8}
+                            style={{ width: "100%", height: "100%" }}
+                            scrollWheelZoom={false}
+                            zoomControl={false}
+                        >
                             <TileLayer
                                 url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                             />
                             <ZoomControl position="bottomright" />
                             {projectsStatic.map((proj, i) => (
-                                <Marker key={proj.id} position={[proj.lat, proj.lng]} icon={radarIcon}>
-                                    <Popup maxWidth={350} minWidth={350}>
+                                <Marker
+                                    key={proj.id}
+                                    position={[proj.lat, proj.lng]}
+                                    icon={radarIcon}
+                                >
+                                    <Popup maxWidth={320} minWidth={240}>
                                         <ProjectPopup projectIndex={i} />
                                     </Popup>
                                 </Marker>
                             ))}
                         </MapContainer>
                     </div>
+
+                    <p className="text-center text-xs text-gray-400 mt-3">
+                        Tap marker untuk melihat detail proyek
+                    </p>
                 </div>
             </section>
         </div>

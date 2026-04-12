@@ -69,8 +69,8 @@ export default function Contact() {
                 EMAILJS_PUBLIC_KEY
             );
             setSubmitted(true);
-        } catch (error) {
-            console.error("EmailJS error:", error);
+        } catch (err) {
+            console.error("EmailJS error:", err);
             alert(
                 "Gagal mengirim pesan. Silakan coba lagi atau hubungi kami langsung."
             );
@@ -81,62 +81,65 @@ export default function Contact() {
 
     return (
         <div className="bg-white text-gray-900">
-            {/* HERO */}
-            <section
-                className="relative text-white overflow-hidden h-screen sm:h-[50vh]"
-                style={{ minHeight: "280px" }}
-            >
+            {/* ── HERO ── */}
+            <section className="relative text-white overflow-hidden h-[50vh] flex items-end justify-center pb-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: "url('/images/contact-bg.jpg')" }}
                 />
                 <div className="absolute inset-0 bg-gray-900/50" />
-                <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-20 sm:py-28">
-                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+
+                <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 w-full h-full">
+                    <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">
                         {t(c.heroTitle1)}
                     </h1>
-                    <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-4">
+                    <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold tracking-tight mb-3 sm:mb-4">
                         {t(c.heroTitle2)}
-                    </h1>
-                    <p className="text-gray-300 text-sm sm:text-base max-w-4xl mb-10">
+                    </h2>
+                    <p className="text-gray-300 text-xs sm:text-sm md:text-base max-w-xl mb-6 sm:mb-10 leading-relaxed">
                         {t(c.heroSubtitle)}
                     </p>
-                    <div className="flex flex-col items-center sm:flex-row sm:justify-center gap-4">
+
+                    {/* Contact pills */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <a
                             href="https://wa.me/6285292261294"
-                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium w-fit"
+                            className="flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 no-underline text-xs sm:text-sm font-medium w-max"
                         >
-                            <FaWhatsapp className="w-4 h-4" />
+                            <FaWhatsapp className="w-4 h-4 flex-shrink-0" />
                             +62 852-9226-1294
                         </a>
                         <a
                             href="mailto:info@gepoenergy.co.id"
-                            className="flex items-center gap-3 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full transition-all duration-300 no-underline text-sm font-medium w-fit"
+                            className="flex items-center gap-2 bg-white/15 hover:bg-white/25 border border-white/20 backdrop-blur-sm text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 no-underline text-xs sm:text-sm font-medium w-max"
                         >
-                            <Mail className="w-4 h-4" />
+                            <Mail className="w-4 h-4 flex-shrink-0" />
                             info@gepoenergy.co.id
                         </a>
                     </div>
                 </div>
             </section>
 
-            {/* FORM */}
-            <section className="bg-white py-14 sm:py-16">
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col items-center gap-3 mb-10">
-                        <h2 className="text-center text-2xl sm:text-3xl font-bold text-black tracking-tight">
+            {/* ── FORM ── */}
+            <section className="bg-white py-10 sm:py-14 md:py-16">
+                <div className="max-w-2xl mx-auto px-8">
+                    {/* Header */}
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 mb-8 sm:mb-10">
+                        <h2 className="text-center text-lg sm:text-2xl md:text-3xl font-bold text-black tracking-tight">
                             {t(c.formTitle)}
                         </h2>
-                        <p className="text-center text-gray-500 text-sm sm:text-base">
+                        <p className="text-center text-gray-500 text-xs sm:text-sm md:text-base max-w-sm">
                             {t(c.formDesc)}
                         </p>
                     </div>
-                    <div className="bg-gray-50/50 rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100">
+
+                    {/* Card */}
+                    <div className="bg-gray-50/50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-lg border border-gray-100">
                         {submitted ? (
-                            <div className="text-center py-12">
-                                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                            <div className="text-center py-10 sm:py-12">
+                                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                                     <svg
-                                        className="w-8 h-8 text-green-500"
+                                        className="w-7 h-7 sm:w-8 sm:h-8 text-green-500"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -149,7 +152,7 @@ export default function Contact() {
                                         />
                                     </svg>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                                     {t(c.successTitle)}
                                 </h3>
                                 <p className="text-gray-500 text-sm">{t(c.successDesc)}</p>
@@ -158,17 +161,18 @@ export default function Contact() {
                                         setSubmitted(false);
                                         setFormData({ nama: "", email: "", pesan: "" });
                                     }}
-                                    className="mt-6 text-blue-600 text-sm underline hover:no-underline"
+                                    className="mt-5 sm:mt-6 text-blue-600 text-sm underline hover:no-underline"
                                 >
                                     {t(c.sendAgain)}
                                 </button>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} noValidate>
-                                <div className="grid grid-cols-1 gap-4">
+                                <div className="flex flex-col gap-3 sm:gap-4">
+                                    {/* Nama */}
                                     <div>
                                         <div
-                                            className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${
+                                            className={`flex items-center gap-3 border rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 bg-white transition-colors ${
                                                 errors.nama
                                                     ? "border-red-400"
                                                     : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"
@@ -181,7 +185,7 @@ export default function Contact() {
                                                 value={formData.nama}
                                                 onChange={handleChange}
                                                 placeholder={t(c.fieldName)}
-                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent"
+                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent min-w-0"
                                             />
                                         </div>
                                         {errors.nama && (
@@ -190,9 +194,11 @@ export default function Contact() {
                                             </p>
                                         )}
                                     </div>
+
+                                    {/* Email */}
                                     <div>
                                         <div
-                                            className={`flex items-center gap-3 border rounded-lg px-4 py-3 bg-white transition-colors ${
+                                            className={`flex items-center gap-3 border rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 bg-white transition-colors ${
                                                 errors.email
                                                     ? "border-red-400"
                                                     : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"
@@ -205,7 +211,7 @@ export default function Contact() {
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 placeholder={t(c.fieldEmail)}
-                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent"
+                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent min-w-0"
                                             />
                                         </div>
                                         {errors.email && (
@@ -214,13 +220,16 @@ export default function Contact() {
                                             </p>
                                         )}
                                     </div>
+
+                                    {/* Pesan */}
                                     <div>
                                         <div
-                                            className={`flex gap-3 min-h-[240px] border rounded-lg px-4 py-3 bg-white transition-colors ${
+                                            className={`flex gap-3 border rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 bg-white transition-colors ${
                                                 errors.pesan
                                                     ? "border-red-400"
                                                     : "border-gray-200 focus-within:border-[#FFD700] focus-within:border-2"
                                             }`}
+                                            style={{ minHeight: "160px" }}
                                         >
                                             <textarea
                                                 name="pesan"
@@ -228,7 +237,7 @@ export default function Contact() {
                                                 onChange={handleChange}
                                                 placeholder={t(c.fieldMessage)}
                                                 rows={5}
-                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent resize-y"
+                                                className="flex-1 outline-none text-sm text-gray-700 placeholder-gray-400 bg-transparent resize-y w-full"
                                             />
                                         </div>
                                         {errors.pesan && (
@@ -238,11 +247,13 @@ export default function Contact() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="mt-6 flex justify-end">
+
+                                {/* Submit */}
+                                <div className="mt-4 sm:mt-6 flex justify-end">
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="bg-black hover:bg-[#FFD700] disabled:opacity-60 text-white hover:text-black font-semibold px-8 py-3 rounded-lg transition-all hover:scale-105 duration-500 text-sm"
+                                        className="bg-black hover:bg-[#FFD700] disabled:opacity-60 text-white hover:text-black font-semibold px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg transition-all hover:scale-105 duration-500 text-sm w-full sm:w-auto"
                                     >
                                         {loading ? t(c.sending) : t(c.submitBtn)}
                                     </button>
